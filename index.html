@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Energy Plus &amp; Build Plus | Rep Portal</title>
+<meta name="description" content="Authorized rep portal for Energy Plus and Build Plus. Access the latest marketing materials, spec sheets, videos, and links." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink:          #0a0c0e;
+    --ink-raise:    #111417;
+    --gold:         #c8a96e;
+    --gold-light:   #e8c98a;
+    --gold-dim:     rgba(200,169,110,0.10);
+    --gold-rule:    rgba(200,169,110,0.25);
+    --white:        #f4f0e8;
+    --white-dim:    rgba(244,240,232,0.62);
+    --white-faint:  rgba(244,240,232,0.55);
+    --hairline:     rgba(244,240,232,0.06);
+    --error-bg:     rgba(184,92,92,0.07);
+    --error-border: rgba(184,92,92,0.22);
+    --error-text:   #d99090;
+    --good:         #7ec99a;
+
+    /* semantic z-index scale */
+    --z-base: 1;
+    --z-sticky: 50;
+    --z-tooltip: 100;
+    --z-toast: 200;
+
+    /* motion easing */
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+
+  body {
+    background: var(--ink);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* grain */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.5;
+  }
+
+  /* ambient glow */
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 55% at 50% 0%, rgba(200,169,110,0.055) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 15% 100%, rgba(200,169,110,0.03) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+
+  .page {
+    position: relative; z-index: var(--z-base);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem 5rem;
+  }
+  .page.is-portal { justify-content: flex-start; }
+
+  a { color: inherit; }
+
+  /* focus-visible: consistent gold ring */
+  :focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* ---- DUAL WORDMARK BLOCK ---- */
+  .brands {
+    text-align: center;
+    margin-bottom: 2.25rem;
+    opacity: 0;
+    animation: riseIn 0.8s cubic-bezier(0.16,1,0.3,1) 0.1s forwards;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .brand-row { display: flex; flex-direction: column; align-items: center; padding: 0.55rem 0; }
+
+  .brand-lockup {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 2rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--white);
+    line-height: 1;
+  }
+  .brand-lockup .plus { color: var(--gold); font-weight: 300; }
+
+  .brand-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(200,169,110,0.55);
+    margin-top: 0.3rem;
+  }
+
+  .brand-portal-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: rgba(200,169,110,0.5);
+    margin-top: 0.6rem;
+  }
+
+  .brands-divider { display: flex; align-items: center; gap: 0.6rem; margin: 0.2rem 0; }
+  .brands-divider .line    { width: 44px; height: 1px; background: var(--gold-rule); }
+  .brands-divider .diamond { width: 4px; height: 4px; background: var(--gold); transform: rotate(45deg); opacity: 0.5; }
+
+  /* ---- LOGIN CARD ---- */
+  .card {
+    background: rgba(244,240,232,0.025);
+    border: 1px solid var(--gold-rule);
+    border-radius: 2px;
+    padding: 2.75rem 3.25rem 3.25rem;
+    width: 100%;
+    max-width: 460px;
+    position: relative;
+    opacity: 0;
+    animation: riseIn 0.9s cubic-bezier(0.16,1,0.3,1) 0.25s forwards;
+  }
+  .card::before, .card::after {
+    content: ''; position: absolute;
+    width: 14px; height: 14px;
+    border-color: var(--gold); border-style: solid; opacity: 0.35;
+  }
+  .card::before { top: -1px; left: -1px; border-width: 1px 0 0 1px; }
+  .card::after  { bottom: -1px; right: -1px; border-width: 0 1px 1px 0; }
+
+  .card-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.57rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); opacity: 0.7; margin-bottom: 0.8rem;
+  }
+  .card-title { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 400; line-height: 1.2; margin-bottom: 0.4rem; }
+  .card-subtitle { font-size: 1rem; color: var(--white-dim); margin-bottom: 1.9rem; line-height: 1.6; }
+  .card-rule { width: 100%; height: 1px; background: var(--gold-rule); opacity: 0.5; margin-bottom: 1.75rem; }
+
+  .input-label {
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(200,169,110,0.7); margin-bottom: 0.5rem;
+  }
+
+  input[type="text"], input[type="password"], input[type="search"] {
+    width: 100%;
+    background: rgba(244,240,232,0.04);
+    border: 1px solid rgba(200,169,110,0.18);
+    border-radius: 2px;
+    padding: 0.85rem 1rem;
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.05rem; font-weight: 300;
+    outline: none;
+    transition: border-color 0.3s, background 0.3s;
+    letter-spacing: 0.02em;
+    -webkit-appearance: none; appearance: none;
+  }
+  input::placeholder { color: rgba(244,240,232,0.3); }
+  input[type="text"]:focus, input[type="password"]:focus, input[type="search"]:focus {
+    border-color: rgba(200,169,110,0.55);
+    background: rgba(200,169,110,0.04);
+  }
+  /* keep dark styling through autofill */
+  input:-webkit-autofill, input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--white);
+    -webkit-box-shadow: 0 0 0 1000px var(--ink-raise) inset;
+    caret-color: var(--white);
+    transition: background-color 9999s ease-out 0s;
+  }
+
+  /* ---- ERROR / SMS PANEL ---- */
+  .error-panel {
+    overflow: hidden; max-height: 0; opacity: 0;
+    transition: max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.35s ease, margin-top 0.35s ease;
+    margin-top: 0;
+  }
+  .error-panel.visible { max-height: 360px; opacity: 1; margin-top: 0.9rem; }
+  .error-inner { background: var(--error-bg); border: 1px solid var(--error-border); border-radius: 2px; padding: 1.1rem 1.2rem; }
+  .error-top { font-size: 0.95rem; color: var(--error-text); margin-bottom: 0.85rem; line-height: 1.55; }
+  .error-top strong { color: var(--white); font-weight: 500; }
+
+  .field { margin-bottom: 1.1rem; }
+  .field:last-of-type { margin-bottom: 0; }
+  .pw-error {
+    display: none;
+    margin-top: 0.55rem;
+    font-size: 0.85rem; color: var(--error-text);
+    font-family: 'DM Sans', sans-serif; line-height: 1.4;
+  }
+  .pw-error.visible { display: block; }
+
+  /* SMS preview: full hairline + tint (no side-stripe) */
+  .sms-preview {
+    background: rgba(244,240,232,0.04);
+    border: 1px solid var(--gold-rule);
+    border-radius: 2px;
+    padding: 0.65rem 0.9rem;
+    font-size: 0.95rem; color: var(--white-dim);
+    font-style: italic; line-height: 1.55;
+    margin-bottom: 0.85rem;
+  }
+
+  .btn-sms {
+    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    background: transparent;
+    border: 1px solid var(--gold-rule); border-radius: 2px;
+    padding: 0.6rem 1rem;
+    color: var(--gold);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem; font-weight: 400; letter-spacing: 0.04em;
+    text-decoration: none; width: 100%; cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .btn-sms:hover { background: var(--gold-dim); border-color: rgba(200,169,110,0.5); }
+
+  /* ---- ACCESS BUTTON ---- */
+  .btn-access {
+    width: 100%; padding: 0.9rem 1rem;
+    background: transparent;
+    border: 1px solid var(--gold-rule); border-radius: 2px;
+    color: var(--gold);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem; font-weight: 400;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    cursor: pointer; margin-top: 1.4rem;
+    position: relative; overflow: hidden;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  .btn-access::before {
+    content: ''; position: absolute; inset: 0;
+    background: var(--gold);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1); z-index: 0;
+  }
+  .btn-access span { position: relative; z-index: 1; }
+  .btn-access:hover::before { transform: scaleX(1); }
+  .btn-access:hover { color: var(--ink); border-color: var(--gold); }
+  .btn-access:active { transform: scale(0.99); }
+
+  /* ---- PORTAL / WELCOME ---- */
+  #portal { display: none; flex-direction: column; align-items: center; width: 100%; max-width: 1040px; }
+  #portal.active { display: flex; animation: riseIn 0.7s cubic-bezier(0.16,1,0.3,1) both; }
+
+  /* top bar */
+  .portal-bar {
+    width: 100%;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1.5rem;
+    padding-bottom: 1.4rem;
+    margin-bottom: 2.2rem;
+    border-bottom: 1px solid var(--gold-rule);
+    flex-wrap: wrap;
+  }
+  .portal-bar-brand { display: flex; align-items: baseline; gap: 0.6rem; }
+  .portal-bar-brand .mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem; letter-spacing: 0.14em; text-transform: uppercase; line-height: 1;
+  }
+  .portal-bar-brand .mark .plus { color: var(--gold); }
+  .portal-bar-brand .sep { color: var(--gold); opacity: 0.4; }
+  .portal-bar-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: rgba(200,169,110,0.55);
+  }
+
+  .welcome-header { text-align: center; margin-bottom: 2rem; }
+  .welcome-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.57rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: rgba(200,169,110,0.55); margin-bottom: 0.85rem;
+  }
+  .welcome-name-line { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.4rem, 5vw, 3.5rem); font-weight: 400; line-height: 1.1; }
+  .welcome-name-line em { font-style: italic; color: var(--gold); }
+  .welcome-access-line {
+    font-size: 0.75rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--white-dim); margin-top: 0.75rem;
+    font-family: 'DM Mono', monospace; font-weight: 300;
+  }
+  .welcome-orn { display: flex; align-items: center; gap: 0.75rem; margin: 1.2rem auto; width: fit-content; }
+  .welcome-orn .line    { width: 48px; height: 1px; background: var(--gold-rule); }
+  .welcome-orn .diamond { width: 5px; height: 5px; background: var(--gold); transform: rotate(45deg); opacity: 0.55; }
+
+  /* ---- ANNOUNCEMENT ---- */
+  .announce {
+    width: 100%;
+    display: flex; align-items: center; gap: 1rem;
+    background: rgba(200,169,110,0.05);
+    border: 1px solid var(--gold-rule);
+    border-radius: 2px;
+    padding: 0.85rem 1.2rem;
+    margin-bottom: 2.4rem;
+  }
+  .announce-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--ink); background: var(--gold);
+    padding: 0.25rem 0.55rem; border-radius: 2px; white-space: nowrap; flex-shrink: 0;
+    font-weight: 400;
+  }
+  .announce-text { font-size: 0.92rem; color: var(--white-dim); line-height: 1.5; }
+  .announce-text strong { color: var(--white); font-weight: 500; }
+  .announce-date {
+    margin-left: auto; flex-shrink: 0;
+    font-family: 'DM Mono', monospace; font-size: 0.62rem;
+    letter-spacing: 0.12em; color: var(--white-faint); white-space: nowrap;
+  }
+
+  /* ---- SECTION HEADING ---- */
+  .section-head { width: 100%; display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.4rem; }
+  .section-head h2 { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: 1.7rem; letter-spacing: 0.02em; white-space: nowrap; }
+  .section-head .rule { flex: 1; height: 1px; background: var(--gold-rule); opacity: 0.5; }
+  .section-head .count { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.15em; color: var(--white-faint); text-transform: uppercase; white-space: nowrap; }
+
+  /* ---- TIER TIMELINE (compact, subtle: a quiet progress list, not a metric) ---- */
+  .tier-timeline { width: 100%; position: relative; display: flex; flex-direction: column; }
+  .tier-timeline::before {
+    content: ''; position: absolute; left: 13px; top: 14px; bottom: 14px; width: 1px;
+    background: linear-gradient(to bottom, var(--gold-rule), rgba(200,169,110,0.08)); z-index: 0;
+  }
+  .tier-row { display: flex; align-items: flex-start; gap: 0.85rem; position: relative; z-index: 1; padding: 0 0 1rem 0; }
+  .tier-row:last-child { padding-bottom: 0; }
+  .tier-node {
+    width: 27px; height: 27px; border-radius: 50%;
+    border: 1px solid var(--gold-rule); background: var(--ink);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .tier-row.active .tier-node { border-color: var(--gold); background: rgba(200,169,110,0.12); }
+  .tier-row.locked .tier-node { border-color: rgba(244,240,232,0.1); }
+  .tier-node-num { font-family: 'DM Mono', monospace; font-size: 0.68rem; font-weight: 400; color: var(--gold); line-height: 1; }
+  .tier-row.locked .tier-node-num { color: rgba(244,240,232,0.3); }
+  .tier-card { flex: 1; min-width: 0; padding: 0.1rem 0 0.15rem; }
+  .tier-card-top { display: flex; align-items: center; gap: 0.55rem; margin-bottom: 0.25rem; }
+  .tier-title { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 400; color: var(--white); letter-spacing: 0.03em; line-height: 1.1; }
+  .tier-row.locked .tier-title { color: var(--white-dim); }
+  .tier-badge { font-family: 'DM Mono', monospace; font-size: 0.48rem; letter-spacing: 0.16em; text-transform: uppercase; padding: 0.14rem 0.45rem; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+  .tier-badge.current { background: rgba(200,169,110,0.15); border: 1px solid rgba(200,169,110,0.4); color: var(--gold-light); }
+  .tier-badge.locked-badge { background: transparent; border: 1px solid rgba(244,240,232,0.14); color: var(--white-faint); }
+  .tier-desc { font-size: 0.8rem; color: var(--white-dim); line-height: 1.5; font-weight: 300; }
+  .tier-row.locked .tier-desc { color: var(--white-faint); }
+  .tier-lock-icon { display: none; }
+
+  /* ---- TOOLBAR: SEARCH + FILTERS ---- */
+  .toolbar { width: 100%; margin-bottom: 1.8rem; display: flex; flex-direction: column; gap: 1rem; }
+  .search-wrap { position: relative; width: 100%; }
+  .search-wrap .search-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: rgba(200,169,110,0.55); pointer-events: none; }
+  .search-wrap input[type="search"] { padding-left: 2.75rem; }
+  .search-wrap input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .chip {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--white-dim);
+    background: transparent;
+    border: 1px solid var(--hairline);
+    border-radius: 20px;
+    padding: 0.45rem 0.95rem;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s, background 0.2s, transform 0.12s ease;
+  }
+  .chip:hover { color: var(--gold); border-color: var(--gold-rule); }
+  .chip:active { transform: scale(0.96); }
+  .chip[aria-pressed="true"] { color: var(--ink); background: var(--gold); border-color: var(--gold); }
+  .chip:disabled { opacity: 0.25; cursor: not-allowed; pointer-events: none; }
+
+  /* ---- OVERVIEW ROW: news + partner level ---- */
+  .overview { width: 100%; display: grid; grid-template-columns: 1fr; gap: 1.2rem; align-items: start; margin-bottom: 2.8rem; }
+  @media (min-width: 820px) { .overview { grid-template-columns: var(--news-ratio, 2fr 1fr); } }
+
+  .panel { padding: 1.6rem 1.7rem; }
+  .panel-head { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 1.1rem; }
+  .panel-head h2 { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: 1.4rem; letter-spacing: 0.02em; white-space: nowrap; }
+  .panel-head .rule { flex: 1; height: 1px; background: var(--gold-rule); opacity: 0.5; }
+
+  .news-item { padding: 0.9rem 0; border-bottom: 1px solid var(--hairline); }
+  .news-item:first-child { padding-top: 0; }
+  .news-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .news-top { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.35rem; flex-wrap: wrap; }
+  .news-tag {
+    font-family: 'DM Mono', monospace; font-size: 0.52rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--ink); background: var(--gold); padding: 0.18rem 0.5rem; border-radius: 2px; flex-shrink: 0;
+  }
+  .news-title { font-family: 'DM Sans', sans-serif; font-weight: 500; color: var(--white); font-size: 1rem; letter-spacing: 0.01em; }
+  .news-date { margin-left: auto; font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.12em; color: var(--white-faint); white-space: nowrap; }
+  .news-text { font-size: 0.9rem; color: var(--white-dim); line-height: 1.55; }
+
+  .tier-panel .tier-timeline { max-width: none; margin: 0; }
+
+  /* ---- RESOURCE TABS ---- */
+  .tabs { position: relative; display: flex; gap: 0.3rem; width: 100%; border-bottom: 1px solid var(--gold-rule); margin-bottom: 1.3rem; }
+  .tab {
+    background: transparent; border: none;
+    color: var(--white-dim); font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; letter-spacing: 0.03em;
+    padding: 0.5rem 1rem 0.7rem; cursor: pointer;
+    transition: color 0.25s var(--ease-out-quint), transform 0.12s ease;
+  }
+  .tab .plus { color: var(--gold); }
+  .tab:hover { color: var(--white); }
+  .tab:active { transform: scale(0.97); }
+  .tab[aria-selected="true"] { color: var(--gold); }
+  .tab-indicator {
+    position: absolute; bottom: -1px; left: 0; height: 2px; width: 0;
+    background: var(--gold); border-radius: 1px;
+    transform: translateX(0);
+    transition: transform 0.4s var(--ease-out-expo), width 0.4s var(--ease-out-expo);
+    pointer-events: none;
+  }
+
+  /* ---- RESOURCE GRID: up to two columns on wide screens ---- */
+  #resource-grid { display: grid; grid-template-columns: 1fr; gap: 1.2rem; width: 100%; align-items: start; }
+  @media (min-width: 760px) { #resource-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .col-block.solo { grid-column: 1 / -1; }
+  @media (min-width: 760px) { .col-block.solo .asset-list { display: grid; grid-template-columns: 1fr 1fr; column-gap: 1.6rem; } }
+
+  /* card stagger: only when #resource-grid carries .animate (tab / filter changes) */
+  #resource-grid.animate .col-block {
+    animation: cardIn 0.42s var(--ease-out-expo) both;
+    animation-delay: calc(var(--i, 0) * 45ms);
+  }
+  @keyframes cardIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  /* ---- BRAND SECTIONS (legacy, unused) ---- */
+  .brand-section { width: 100%; margin-bottom: 2.4rem; }
+  .brand-section.is-hidden { display: none; }
+  .brand-divider { width: 100%; display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.3rem; }
+  .brand-divider .mark { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; letter-spacing: 0.12em; text-transform: uppercase; line-height: 1; white-space: nowrap; }
+  .brand-divider .mark .plus { color: var(--gold); }
+  .brand-divider .rule { flex: 1; height: 1px; background: var(--gold-rule); opacity: 0.5; }
+  .brand-divider .b-count { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.15em; color: var(--white-faint); text-transform: uppercase; white-space: nowrap; }
+
+  /* ---- RESOURCE GROUP CARDS (the card-one / card-two pattern, scaled to N) ---- */
+  .columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.2rem; width: 100%; align-items: start; }
+  .col-block {
+    background: rgba(244,240,232,0.02);
+    border: 1px solid var(--gold-rule); border-radius: 2px;
+    padding: 1.5rem; position: relative;
+  }
+  .col-block.is-hidden { display: none; }
+  .col-block::before, .col-block::after {
+    content: ''; position: absolute; width: 10px; height: 10px;
+    border-color: var(--gold); border-style: solid; opacity: 0.2;
+  }
+  .col-block::before { top: -1px; left: -1px; border-width: 1px 0 0 1px; }
+  .col-block::after  { bottom: -1px; right: -1px; border-width: 0 1px 1px 0; }
+
+  .col-head { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1.1rem; }
+  .col-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold); opacity: 0.9; white-space: nowrap;
+  }
+  .col-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.52rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--gold-light);
+    border: 1px solid var(--gold-rule); border-radius: 20px;
+    padding: 0.12rem 0.5rem; white-space: nowrap; flex-shrink: 0;
+  }
+  .col-head .rule { flex: 1; height: 1px; background: var(--gold-rule); opacity: 0.5; }
+  .col-head .col-count { color: var(--white-faint); opacity: 0.9; font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; }
+
+  /* asset row */
+  .asset {
+    display: flex; align-items: center; gap: 0.85rem;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .asset:last-child { border-bottom: none; }
+  .asset-main { flex: 1; min-width: 0; }
+  .asset-name { font-size: 1rem; font-weight: 300; color: rgba(244,240,232,0.9); letter-spacing: 0.01em; line-height: 1.3; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+  .asset-new {
+    font-family: 'DM Mono', monospace; font-size: 0.5rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--ink); background: var(--gold); padding: 0.12rem 0.4rem; border-radius: 2px; font-weight: 400;
+  }
+  .asset-meta {
+    margin-top: 0.25rem;
+    font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.08em;
+    color: var(--white-faint); display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+  }
+  .asset-meta .dot { width: 2px; height: 2px; border-radius: 50%; background: currentColor; opacity: 0.6; }
+  .asset-actions { display: flex; align-items: center; gap: 0.35rem; flex-shrink: 0; }
+
+  .link-btn {
+    display: flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; border-radius: 2px;
+    border: 1px solid rgba(200,169,110,0.2);
+    background: transparent; color: rgba(200,169,110,0.7);
+    cursor: pointer; text-decoration: none;
+    transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.18s var(--ease-out-quint);
+    position: relative; flex-shrink: 0;
+  }
+  .link-btn:hover { background: rgba(200,169,110,0.08); border-color: rgba(200,169,110,0.5); color: var(--gold); transform: translateY(-1px); }
+  .link-btn:active { transform: translateY(0) scale(0.94); }
+  .link-btn svg { width: 14px; height: 14px; }
+  .link-btn.copied { animation: copyPop 0.34s var(--ease-out-quint); }
+  @keyframes copyPop { 0% { transform: scale(1); } 40% { transform: scale(1.16); } 100% { transform: scale(1); } }
+
+  /* tooltip */
+  .link-btn::after {
+    content: attr(data-tip);
+    position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%);
+    background: rgba(15,18,22,0.97); border: 1px solid var(--gold-rule); color: var(--white);
+    font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.3rem 0.5rem; border-radius: 2px; white-space: nowrap;
+    opacity: 0; pointer-events: none; transition: opacity 0.15s; z-index: var(--z-tooltip);
+  }
+  .link-btn:hover::after, .link-btn:focus-visible::after { opacity: 1; }
+  .link-btn.copied { border-color: rgba(126,201,154,0.5); color: var(--good); }
+  .link-btn.copied::after { content: 'Copied'; opacity: 1; }
+
+  /* ---- EMPTY STATE ---- */
+  .empty {
+    display: none; width: 100%;
+    flex-direction: column; align-items: center; text-align: center;
+    padding: 3.5rem 1.5rem; gap: 0.6rem;
+    border: 1px dashed var(--gold-rule); border-radius: 2px;
+    margin-bottom: 2rem;
+  }
+  .empty.visible { display: flex; animation: fadeIn 0.3s var(--ease-out-quint) both; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  .empty-icon { color: rgba(200,169,110,0.5); margin-bottom: 0.4rem; }
+  .empty-title { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 400; }
+  .empty-text { color: var(--white-dim); font-size: 0.95rem; max-width: 42ch; }
+  .empty-reset {
+    margin-top: 0.8rem; background: transparent; border: 1px solid var(--gold-rule); border-radius: 2px;
+    color: var(--gold); font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.15em;
+    text-transform: uppercase; padding: 0.5rem 1.1rem; cursor: pointer; transition: background 0.2s, border-color 0.2s;
+  }
+  .empty-reset:hover { background: var(--gold-dim); border-color: rgba(200,169,110,0.5); }
+
+  /* ---- FOOTER / HELP ---- */
+  .portal-foot {
+    width: 100%; margin-top: 1rem; padding-top: 1.6rem;
+    border-top: 1px solid var(--gold-rule);
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  }
+  .help-line { font-size: 0.85rem; color: var(--white-dim); }
+  .help-line a { color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--gold-rule); transition: border-color 0.2s; }
+  .help-line a:hover { border-color: var(--gold); }
+
+  .btn-logout {
+    background: transparent; border: 1px solid rgba(244,240,232,0.12); border-radius: 2px;
+    padding: 0.5rem 1.6rem; color: rgba(244,240,232,0.5);
+    font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase;
+    cursor: pointer; transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-logout:hover { border-color: var(--gold-rule); color: var(--gold); }
+
+  /* ---- TOAST ---- */
+  .toast {
+    position: fixed; bottom: 1.5rem; left: 50%;
+    transform: translateX(-50%) translateY(2rem);
+    background: var(--ink-raise); border: 1px solid var(--gold-rule); border-radius: 2px;
+    color: var(--white); font-size: 0.85rem; padding: 0.7rem 1.2rem;
+    display: flex; align-items: center; gap: 0.6rem;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s, transform 0.3s; z-index: var(--z-toast);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast svg { color: var(--good); }
+
+  /* ---- ANIMATIONS ---- */
+  .shake { animation: shake 0.45s ease; }
+  @keyframes riseIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes shake { 0%,100% { transform: translateX(0); } 18% { transform: translateX(-7px); } 36% { transform: translateX(7px); } 54% { transform: translateX(-4px); } 72% { transform: translateX(4px); } }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 760px) {
+    .columns { grid-template-columns: 1fr; }
+    .card { padding: 2rem 1.75rem 2.5rem; }
+    .announce { flex-wrap: wrap; }
+    .announce-date { margin-left: 0; }
+    .portal-bar { justify-content: center; text-align: center; }
+  }
+
+  /* ---- REDUCED MOTION ---- */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+    .brands, .card, #portal.active { opacity: 1 !important; transform: none !important; }
+    .btn-access::before { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page" id="page">
+
+  <!-- DUAL BRANDMARK -->
+  <div class="brands" id="brands">
+    <div class="brand-row">
+      <div class="brand-lockup">Energy<span class="plus"> +</span></div>
+      <div class="brand-sub">Your Energy Strategist</div>
+    </div>
+    <div class="brands-divider"><span class="line"></span><div class="diamond"></div><span class="line"></span></div>
+    <div class="brand-row">
+      <div class="brand-lockup">Build<span class="plus"> +</span></div>
+      <div class="brand-sub">Your Groundwork Strategist</div>
+    </div>
+    <div class="brand-portal-label">Rep Portal</div>
+  </div>
+
+  <!-- LOGIN CARD -->
+  <main class="card" id="login-screen" aria-labelledby="login-title">
+    <div class="card-eyebrow">Authorized Access</div>
+    <h1 class="card-title" id="login-title">Rep Portal</h1>
+    <p class="card-subtitle">Enter your first name to access your resource links and marketing materials.</p>
+    <div class="card-rule"></div>
+
+    <div class="field">
+      <label class="input-label" for="name-input">Your First Name</label>
+      <input type="text" id="name-input" placeholder="e.g. Dan" autocomplete="off" spellcheck="false" aria-describedby="error-panel" />
+    </div>
+
+    <div class="field">
+      <label class="input-label" for="pw-input">Access Password</label>
+      <input type="password" id="pw-input" placeholder="Enter password" autocomplete="off" aria-describedby="pw-error" />
+      <p class="pw-error" id="pw-error" role="alert">Incorrect password. Please try again.</p>
+    </div>
+
+    <!-- ERROR / SMS PANEL -->
+    <div class="error-panel" id="error-panel" role="alert">
+      <div class="error-inner">
+        <div class="error-top">Name not recognized. Please reach out to <strong>Dan</strong> to gain access.</div>
+        <a class="btn-sms" id="btn-sms" href="#">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Send this message to Dan
+        </a>
+        <div class="sms-preview" style="margin-top:0.85rem;">"Hey Dan, I tried to log in to the rep portal to access the marketing materials and technical data and was denied."</div>
+      </div>
+    </div>
+
+    <button class="btn-access" onclick="handleAccess()"><span>Access My Links</span></button>
+  </main>
+
+  <!-- PORTAL -->
+  <section id="portal" aria-labelledby="welcome-name-display" hidden>
+
+    <div class="portal-bar">
+      <div class="portal-bar-brand">
+        <span class="mark">Energy<span class="plus"> +</span></span>
+        <span class="sep">/</span>
+        <span class="mark">Build<span class="plus"> +</span></span>
+      </div>
+      <span class="portal-bar-label">Rep Portal</span>
+    </div>
+
+    <div class="welcome-header">
+      <div class="welcome-eyebrow">Authorized Rep Access</div>
+      <div class="welcome-name-line">Welcome, <em id="welcome-name-display">Rep</em></div>
+      <div class="welcome-access-line">Your latest resources, always current</div>
+      <div class="welcome-orn"><div class="line"></div><div class="diamond"></div><div class="line"></div></div>
+    </div>
+
+    <!-- OVERVIEW ROW: news (context-aware width) + partner level -->
+    <div class="overview" id="overview">
+      <div class="col-block panel news-panel" id="news-panel">
+        <div class="panel-head"><h2>Latest Updates</h2><span class="rule"></span></div>
+        <div id="news-list"></div>
+      </div>
+      <div class="col-block panel tier-panel">
+        <div class="panel-head"><h2>Your Partner Level</h2><span class="rule"></span></div>
+        <div class="tier-timeline">
+          <div class="tier-row active">
+            <div class="tier-node"><div class="tier-node-num">1</div></div>
+            <div class="tier-card">
+              <div class="tier-card-top"><div class="tier-title">Field Partner</div><div class="tier-badge current">Your Level</div></div>
+              <div class="tier-desc">Full access to core marketing materials and technical data. You are equipped to bring Energy Plus and Build Plus solutions to market.</div>
+            </div>
+          </div>
+          <div class="tier-row locked">
+            <div class="tier-node"><div class="tier-node-num">2</div></div>
+            <div class="tier-card">
+              <svg class="tier-lock-icon" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+              <div class="tier-card-top"><div class="tier-title">Certified Partner</div><div class="tier-badge locked-badge">Locked</div></div>
+              <div class="tier-desc">Unlocked by reaching a minimum revenue threshold. Grants access to our extended technology portfolio and advanced sales resources.</div>
+            </div>
+          </div>
+          <div class="tier-row locked">
+            <div class="tier-node"><div class="tier-node-num">3</div></div>
+            <div class="tier-card">
+              <svg class="tier-lock-icon" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+              <div class="tier-card-top"><div class="tier-title">Portfolio Partner</div><div class="tier-badge locked-badge">Locked</div></div>
+              <div class="tier-desc">Reserved for partners who have reached our highest revenue threshold. Includes preferential terms, a live dashboard of our global network and sales activity, and participation in company-wide profit distribution.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESOURCE LIBRARY -->
+    <div class="section-head">
+      <h2>Resource Library</h2>
+      <span class="rule"></span>
+      <span class="count" id="result-count"></span>
+    </div>
+
+    <div class="tabs" id="brand-tabs" role="tablist" aria-label="Brand"></div>
+
+    <div class="toolbar">
+      <div class="search-wrap">
+        <svg class="search-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <label for="asset-search" class="visually-hidden" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Search resources</label>
+        <input type="search" id="asset-search" placeholder="Search resources by name..." autocomplete="off" spellcheck="false" />
+      </div>
+      <div class="chips" id="chips" role="group" aria-label="Filter by category"></div>
+    </div>
+
+    <div id="resource-grid"></div>
+
+    <div class="empty" id="empty-state">
+      <svg class="empty-icon" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+      <div class="empty-title">No resources found</div>
+      <div class="empty-text">Nothing matches your search and filters. Try a different term or clear the filters to see everything.</div>
+      <button class="empty-reset" onclick="resetFilters()">Clear filters</button>
+    </div>
+
+    <div class="portal-foot">
+      <div class="help-line">Need something that isn't here? <a id="foot-sms" href="#">Message Dan</a>.</div>
+      <button class="btn-logout" onclick="logout()">Sign Out</button>
+    </div>
+
+  </section>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toast-text">Link copied</span>
+</div>
+
+<script>
+  /* ---- ACCESS CONTROL ---- */
+  const APPROVED = ["pepper","bryndon","cliff","raul","jody","tammy","garrett","ronson","mount","cj","christian"];
+  const DISPLAY  = { pepper:"Pepper", bryndon:"Bryndon", cliff:"Cliff", raul:"Raul", jody:"Jody", tammy:"Tammy", garrett:"Garrett", ronson:"Ronson", mount:"Mount", cj:"CJ", christian:"Christian" };
+  const DAN = "8648777068";
+  const MSG = "Hey Dan, I tried to log in to the rep portal to access the marketing materials and technical data and was denied.";
+  const HELP_MSG = "Hey Dan, I'm in the rep portal but I need a resource that isn't listed. Can you help?";
+
+  document.getElementById('btn-sms').href = "sms:" + DAN + "?body=" + encodeURIComponent(MSG);
+  document.getElementById('foot-sms').href = "sms:" + DAN + "?body=" + encodeURIComponent(HELP_MSG);
+
+  /* ---- CATEGORY MODEL ---- */
+  const CATEGORIES = [
+    { key: 'all',        label: 'All' },
+    { key: 'tools',      label: 'Calculators' },
+    { key: 'marketing',  label: 'Marketing' },
+    { key: 'iso',        label: 'ISO Compliance' },
+    { key: 'hvac',       label: 'HVAC' },
+    { key: 'reference',  label: 'Reference' },
+    { key: 'video',      label: 'Videos' },
+  ];
+  const CAT_LABEL = Object.fromEntries(CATEGORIES.map(c => [c.key, c.label]));
+
+  /* type -> primary action (icon + verb) */
+  const ICONS = {
+    open:  '<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>',
+    doc:   '<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
+    watch: '<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>',
+    copy:  '<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>',
+  };
+  const PRIMARY = {
+    link:  { verb: 'Open',  icon: ICONS.open },
+    doc:   { verb: 'Open',  icon: ICONS.doc },
+    video: { verb: 'Watch', icon: ICONS.watch },
+  };
+
+  /* ---- RESOURCE DATA (real links) ---- */
+  const GROUPS = [
+    /* ENERGY PLUS */
+    { brand: 'Energy Plus', title: 'Tools & Marketing', items: [
+      { name: 'Bilingual Calculator',        kind: 'Calculator', category: 'tools',     type: 'link', url: 'https://bit.ly/ep-calc' },
+      { name: 'Commercial Facility Flyer',   kind: 'Flyer',      category: 'marketing', type: 'doc',  url: 'https://bit.ly/commercial-facility' },
+    ]},
+    { brand: 'Energy Plus', title: 'ABMS · Anti-Bribery', tag: 'ISO 37001', items: [
+      { name: 'Anti-Bribery Policy',                code: 'ABMS-001', kind: 'Policy',        category: 'iso', type: 'doc', url: 'https://bit.ly/anti-bribery_' },
+      { name: 'Government Official Due Diligence',  code: 'ABMS-002', kind: 'Due Diligence', category: 'iso', type: 'doc', url: 'https://bit.ly/due-diligence_' },
+      { name: 'Referral Commission Agreement',      code: 'ABMS-003', kind: 'Agreement',     category: 'iso', type: 'doc', url: 'https://bit.ly/referral-commission-agreement' },
+      { name: 'Commission Gifts Register',          code: 'ABMS-004', kind: 'Register',      category: 'iso', type: 'doc', url: 'https://bit.ly/commission-gifts-reg' },
+    ]},
+    { brand: 'Energy Plus', title: 'ISMS · Information Security', tag: 'ISO 27001', items: [
+      { name: 'Information Security Policy',     code: 'ISMS-001', kind: 'Policy',    category: 'iso', type: 'doc', url: 'https://bit.ly/info-security_' },
+      { name: 'ISMS Scope Document',             code: 'ISMS-002', kind: 'Scope',     category: 'iso', type: 'doc', url: 'https://bit.ly/ISMS-Scope' },
+      { name: 'Asset Inventory & Risk Register', code: 'ISMS-003', kind: 'Register',  category: 'iso', type: 'doc', url: 'https://bit.ly/inventory-risk-register' },
+      { name: 'Access Control Policy',           code: 'ISMS-004', kind: 'Policy',    category: 'iso', type: 'doc', url: 'https://bit.ly/access-control_' },
+      { name: 'Incident Response Procedure',     code: 'ISMS-005', kind: 'Procedure', category: 'iso', type: 'doc', url: 'https://bit.ly/incident-response_' },
+      { name: 'Data Retention & Deletion Policy',code: 'ISMS-006', kind: 'Policy',    category: 'iso', type: 'doc', url: 'https://bit.ly/Data-Retention-Deletion' },
+      { name: 'Statement of Applicability',      code: 'ISMS-007', kind: 'Statement', category: 'iso', type: 'doc', url: 'https://bit.ly/isms-statement-applicability' },
+    ]},
+    { brand: 'Energy Plus', title: 'QMS · Quality', tag: 'ISO 9001', items: [
+      { name: 'Quality Policy',          code: 'QMS-001', kind: 'Policy',    category: 'iso', type: 'doc', url: 'https://bit.ly/Quality-Policy_' },
+      { name: 'Scope Document',          code: 'QMS-002', kind: 'Scope',     category: 'iso', type: 'doc', url: 'https://bit.ly/scope-doc' },
+      { name: 'Risk Register',           code: 'QMS-003', kind: 'Register',  category: 'iso', type: 'doc', url: 'https://bit.ly/risk-register_' },
+      { name: 'Roles & Responsibilities',code: 'QMS-004', kind: 'Reference', category: 'iso', type: 'doc', url: 'https://bit.ly/Roles-Responsibilities_' },
+      { name: 'Process Map',             code: 'QMS-005', kind: 'Reference', category: 'iso', type: 'doc', url: 'https://bit.ly/process-map_' },
+      { name: 'Corrective Action Log',   code: 'QMS-006', kind: 'Log',       category: 'iso', type: 'doc', url: 'https://bit.ly/Corrective-Action-Log' },
+    ]},
+    { brand: 'Energy Plus', title: 'HVAC', items: [
+      { name: 'CryogenX4', kind: 'Product Data Sheet', category: 'hvac', type: 'doc', url: 'https://bit.ly/cryogenx4-datasheet' },
+    ]},
+    { brand: 'Energy Plus', title: 'HVAC Optimizer', items: [
+      { name: 'HVAC Optimizer Data Sheet',  kind: 'Data Sheet', category: 'hvac', type: 'doc', url: 'https://bit.ly/HVACOptDataSheet' },
+      { name: 'HVAC Optimizer — 150 Studies', kind: 'Studies',  category: 'hvac', type: 'doc', url: 'https://bit.ly/HVACO150' },
+      { name: 'Installation & Demo Guide',  kind: 'Guide',      category: 'hvac', type: 'doc', url: 'https://bit.ly/HVACOptInstallGuide' },
+    ]},
+    /* BUILD PLUS */
+    { brand: 'Build Plus', title: 'In-Place BaseGrade', items: [
+      { name: 'In-Place Video',                    kind: 'Video',              category: 'video',     type: 'video', url: 'https://bit.ly/in-place-vid' },
+      { name: 'In-Place BaseGrade Landing Page',   kind: 'Landing Page',       category: 'marketing', type: 'link',  url: 'https://bit.ly/InPlaceLP' },
+      { name: 'Materials Calculator',              kind: 'Calculator',         category: 'tools',     type: 'link',  url: 'https://bit.ly/InPlaceCalculate' },
+      { name: 'Calculator Assumptions',            kind: 'Reference',          category: 'reference', type: 'doc',   url: 'https://bit.ly/InPlaceC_Assumptions' },
+      { name: 'Technical Overview',                kind: 'Technical Overview', category: 'reference', type: 'doc',   url: 'https://bit.ly/inplace-tech' },
+    ]},
+  ];
+  const BRAND_ORDER = ['Energy Plus', 'Build Plus'];
+
+  /* ---- NEWS / UPDATES (edit freely; the column width adapts to how many there are) ---- */
+  const NEWS = [
+    { tag: 'New', title: 'Full ISO compliance library is live', text: 'ISO 37001 (ABMS), 27001 (ISMS), and 9001 (QMS) documents are now available under Energy Plus.', date: 'This week' },
+    { title: 'HVAC Optimizer — 150 studies added', text: 'The complete study set plus the updated installation & demo guide are posted under Energy Plus.', date: 'This week' },
+    { title: 'New bilingual calculator', text: 'The Energy Plus bilingual calculator is live for customer-facing estimates.', date: 'Recent' },
+  ];
+
+  /* ---- STATE ---- */
+  let activeCat = 'all';
+  let activeBrand = BRAND_ORDER[0];
+  let query = '';
+  let animateNext = false; // true for tab/filter changes, false while typing
+
+  /* ---- ESCAPE ---- */
+  function esc(s) { return String(s).replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
+  function brandMark(name) { return esc(name.replace(/\s*Plus$/, '')) + '<span class="plus"> +</span>'; }
+
+  /* ---- NEWS RENDER + CONTEXT-AWARE WIDTH ---- */
+  function renderNews() {
+    const panel = document.getElementById('news-panel');
+    const list = document.getElementById('news-list');
+    const overview = document.getElementById('overview');
+    if (!NEWS.length) {
+      panel.style.display = 'none';
+      overview.style.setProperty('--news-ratio', '1fr');
+      return;
+    }
+    panel.style.display = '';
+    list.innerHTML = NEWS.map(n => `
+      <div class="news-item">
+        <div class="news-top">${n.tag ? `<span class="news-tag">${esc(n.tag)}</span>` : ''}<span class="news-title">${esc(n.title)}</span>${n.date ? `<span class="news-date">${esc(n.date)}</span>` : ''}</div>
+        <div class="news-text">${esc(n.text)}</div>
+      </div>`).join('');
+    // News is fixed at ~2/3 of the row; partner level takes ~1/3.
+    overview.style.setProperty('--news-ratio', '2fr 1fr');
+  }
+
+  /* ---- BRAND TABS ---- */
+  const tabsEl = document.getElementById('brand-tabs');
+  BRAND_ORDER.forEach(brand => {
+    const t = document.createElement('button');
+    t.className = 'tab';
+    t.type = 'button';
+    t.setAttribute('role', 'tab');
+    t.innerHTML = brandMark(brand);
+    t.setAttribute('aria-label', brand);
+    t.setAttribute('aria-selected', brand === activeBrand ? 'true' : 'false');
+    t.dataset.brand = brand;
+    t.addEventListener('click', () => selectBrand(brand));
+    tabsEl.appendChild(t);
+  });
+  const tabIndicator = document.createElement('span');
+  tabIndicator.className = 'tab-indicator';
+  tabsEl.appendChild(tabIndicator);
+  function positionTabIndicator() {
+    const active = tabsEl.querySelector('.tab[aria-selected="true"]');
+    if (!active || !active.offsetWidth) return;
+    tabIndicator.style.width = active.offsetWidth + 'px';
+    tabIndicator.style.transform = `translateX(${active.offsetLeft}px)`;
+  }
+  window.addEventListener('resize', positionTabIndicator);
+
+  tabsEl.addEventListener('keydown', e => {
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    const i = BRAND_ORDER.indexOf(activeBrand);
+    const next = e.key === 'ArrowRight' ? (i + 1) % BRAND_ORDER.length : (i - 1 + BRAND_ORDER.length) % BRAND_ORDER.length;
+    selectBrand(BRAND_ORDER[next]);
+    tabsEl.querySelector(`[data-brand="${BRAND_ORDER[next]}"]`).focus();
+  });
+  function selectBrand(brand) {
+    if (brand === activeBrand) return;
+    activeBrand = brand;
+    tabsEl.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', t.dataset.brand === brand ? 'true' : 'false'));
+    positionTabIndicator();
+    updateChipAvailability();
+    syncChips();
+    animateNext = true;
+    render();
+  }
+
+  /* ---- RENDER CHIPS ---- */
+  const chipsEl = document.getElementById('chips');
+  CATEGORIES.forEach(c => {
+    const b = document.createElement('button');
+    b.className = 'chip';
+    b.type = 'button';
+    b.textContent = c.label;
+    b.setAttribute('aria-pressed', c.key === activeCat ? 'true' : 'false');
+    b.dataset.cat = c.key;
+    b.addEventListener('click', () => { activeCat = c.key; syncChips(); animateNext = true; render(); });
+    chipsEl.appendChild(b);
+  });
+  function syncChips() {
+    chipsEl.querySelectorAll('.chip').forEach(ch => ch.setAttribute('aria-pressed', ch.dataset.cat === activeCat ? 'true' : 'false'));
+  }
+  function updateChipAvailability() {
+    const brandCats = new Set(GROUPS.filter(g => g.brand === activeBrand).flatMap(g => g.items.map(i => i.category)));
+    if (activeCat !== 'all' && !brandCats.has(activeCat)) activeCat = 'all';
+    chipsEl.querySelectorAll('.chip').forEach(ch => {
+      const k = ch.dataset.cat;
+      ch.disabled = !(k === 'all' || brandCats.has(k));
+    });
+  }
+
+  /* ---- MATCH ---- */
+  function matches(item) {
+    if (activeCat !== 'all' && item.category !== activeCat) return false;
+    if (query) {
+      const hay = (item.name + ' ' + item.kind + ' ' + (item.code || '') + ' ' + (CAT_LABEL[item.category] || '')).toLowerCase();
+      if (!hay.includes(query)) return false;
+    }
+    return true;
+  }
+
+  /* ---- RENDER GRID (active brand only; up to two columns) ---- */
+  const gridEl = document.getElementById('resource-grid');
+  const emptyEl = document.getElementById('empty-state');
+  const countEl = document.getElementById('result-count');
+
+  function render() {
+    const groups = GROUPS.filter(g => g.brand === activeBrand);
+    const visible = groups.map(g => ({ g, items: g.items.filter(matches) })).filter(x => x.items.length);
+    const shown = visible.reduce((n, x) => n + x.items.length, 0);
+    const solo = visible.length === 1;
+
+    gridEl.innerHTML = visible.map(({ g, items }, idx) => {
+      const rows = items.map(it => {
+        const prim = PRIMARY[it.type] || PRIMARY.link;
+        const copyText = it.name + ' — ' + it.url;
+        const parts = [it.kind].concat(it.code ? [it.code] : []);
+        const meta = parts.map(p => `<span>${esc(p)}</span>`).join('<span class="dot"></span>');
+        return `
+          <div class="asset">
+            <div class="asset-main">
+              <div class="asset-name">${esc(it.name)}</div>
+              <div class="asset-meta">${meta}</div>
+            </div>
+            <div class="asset-actions">
+              <a class="link-btn" href="${esc(it.url)}" target="_blank" rel="noopener" data-tip="${esc(prim.verb)}" aria-label="${esc(prim.verb)} ${esc(it.name)}">${prim.icon}</a>
+              <button class="link-btn" type="button" data-tip="Copy link" data-copy="${esc(copyText)}" onclick="copyLink(this)" aria-label="Copy link for ${esc(it.name)}">${ICONS.copy}</button>
+            </div>
+          </div>`;
+      }).join('');
+      const tag = g.tag ? `<span class="col-tag">${esc(g.tag)}</span>` : '';
+      return `<div class="col-block${solo ? ' solo' : ''}" style="--i:${idx}"><div class="col-head"><span class="col-title">${esc(g.title)}</span>${tag}<span class="rule"></span><span class="col-count">${items.length}</span></div><div class="asset-list">${rows}</div></div>`;
+    }).join('');
+
+    gridEl.classList.toggle('animate', animateNext && shown > 0);
+    animateNext = false;
+
+    emptyEl.classList.toggle('visible', shown === 0);
+    gridEl.style.display = shown === 0 ? 'none' : '';
+
+    const brandTotal = groups.reduce((n, g) => n + g.items.length, 0);
+    countEl.textContent = (activeCat === 'all' && !query) ? `${brandTotal} resources` : `${shown} of ${brandTotal}`;
+  }
+
+  /* ---- SEARCH ---- */
+  document.getElementById('asset-search').addEventListener('input', e => {
+    query = e.target.value.trim().toLowerCase();
+    render();
+  });
+
+  function resetFilters() {
+    activeCat = 'all'; query = '';
+    document.getElementById('asset-search').value = '';
+    updateChipAvailability(); syncChips(); animateNext = true; render();
+  }
+
+  /* ---- COPY ---- */
+  function copyLink(btn) {
+    const text = btn.getAttribute('data-copy');
+    const done = () => {
+      btn.classList.add('copied');
+      showToast('Link copied to clipboard');
+      setTimeout(() => btn.classList.remove('copied'), 2000);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+    } else {
+      fallbackCopy(text, done);
+    }
+  }
+  function fallbackCopy(text, done) {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta); done();
+  }
+
+  /* ---- TOAST ---- */
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toast-text').textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  /* ---- ACCESS FLOW ---- */
+  const PASSWORD = "build"; // case-insensitive; same for everyone
+
+  function handleAccess() {
+    const nameInput = document.getElementById('name-input');
+    const pwInput = document.getElementById('pw-input');
+    const panel = document.getElementById('error-panel');
+    const pwError = document.getElementById('pw-error');
+    const name = nameInput.value.trim().toLowerCase();
+    const pw = pwInput.value.trim().toLowerCase();
+
+    if (!name) { shake(nameInput); return; }
+
+    // Unknown name -> denied + SMS panel
+    if (!APPROVED.includes(name)) {
+      pwError.classList.remove('visible');
+      panel.classList.add('visible');
+      shake(nameInput);
+      return;
+    }
+
+    // Known name, wrong/empty password -> inline password error
+    if (pw !== PASSWORD) {
+      closeError();
+      pwError.classList.add('visible');
+      shake(pwInput);
+      return;
+    }
+
+    // Granted
+    closeError();
+    pwError.classList.remove('visible');
+    document.getElementById('welcome-name-display').textContent = DISPLAY[name] || cap(name);
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('brands').style.display = 'none';
+    const portal = document.getElementById('portal');
+    portal.hidden = false;
+    portal.classList.add('active');
+    document.getElementById('page').classList.add('is-portal');
+    renderNews();
+    updateChipAvailability();
+    render();
+    requestAnimationFrame(positionTabIndicator);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function closeError() { document.getElementById('error-panel').classList.remove('visible'); }
+  function shake(el) { el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
+  function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+  function logout() {
+    document.getElementById('name-input').value = '';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-error').classList.remove('visible');
+    closeError();
+    const portal = document.getElementById('portal');
+    portal.classList.remove('active');
+    portal.hidden = true;
+    document.getElementById('login-screen').style.display = '';
+    document.getElementById('brands').style.display = '';
+    document.getElementById('page').classList.remove('is-portal');
+    resetFilters();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function clearLoginErrors() {
+    closeError();
+    document.getElementById('pw-error').classList.remove('visible');
+  }
+  document.getElementById('name-input').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('pw-input').focus(); });
+  document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') handleAccess(); });
+  document.getElementById('name-input').addEventListener('input', clearLoginErrors);
+  document.getElementById('pw-input').addEventListener('input', clearLoginErrors);
+</script>
+</body>
+</html>
