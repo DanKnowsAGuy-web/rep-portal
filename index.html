@@ -436,10 +436,11 @@
     pointer-events: none;
   }
 
-  /* ---- RESOURCE GRID: up to two columns on wide screens ---- */
-  #resource-grid { display: grid; grid-template-columns: 1fr; gap: 1.2rem; width: 100%; align-items: start; }
-  @media (min-width: 760px) { #resource-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  .col-block.solo { grid-column: 1 / -1; }
+  /* ---- RESOURCE GRID: masonry flow so cards pack up (no dead gaps) ---- */
+  #resource-grid { width: 100%; column-gap: 1.2rem; }
+  #resource-grid .col-block { break-inside: avoid; -webkit-column-break-inside: avoid; margin-bottom: 1.2rem; }
+  @media (min-width: 760px) { #resource-grid { column-count: 2; } }
+  .col-block.solo { column-span: all; -webkit-column-span: all; }
   @media (min-width: 760px) { .col-block.solo .asset-list { display: grid; grid-template-columns: 1fr 1fr; column-gap: 1.6rem; } }
 
   /* card stagger: only when #resource-grid carries .animate (tab / filter changes) */
