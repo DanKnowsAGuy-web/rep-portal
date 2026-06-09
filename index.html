@@ -808,6 +808,7 @@
   /* ---- CATEGORY MODEL ---- */
   const CATEGORIES = [
     { key: 'all',        label: 'All' },
+    { key: 'web',        label: 'Websites' },
     { key: 'tools',      label: 'Calculators' },
     { key: 'marketing',  label: 'Marketing' },
     { key: 'iso',        label: 'ISO Compliance' },
@@ -833,6 +834,10 @@
   /* ---- RESOURCE DATA (real links) ---- */
   const GROUPS = [
     /* ENERGY PLUS */
+    { brand: 'Energy Plus', title: 'Main Website Links', items: [
+      { name: 'Partner Platform', kind: 'Website', category: 'web', type: 'link', url: 'https://yourenergyplus.com' },
+      { name: 'Energy Savings',   kind: 'Website', category: 'web', type: 'link', url: 'https://slashyourenergycost.com' },
+    ]},
     { brand: 'Energy Plus', title: 'Tools & Marketing', items: [
       { name: 'Bilingual Calculator',        kind: 'Calculator', category: 'tools',     type: 'link', url: 'https://bit.ly/ep-calc' },
       { name: 'SC Energy Forward',           kind: 'Website',    category: 'marketing', type: 'link', url: 'https://bit.ly/sc-energy_' },
