@@ -721,17 +721,6 @@
       <div class="welcome-orn"><div class="line"></div><div class="diamond"></div><div class="line"></div></div>
     </div>
 
-    <!-- LIVE TICKER -->
-    <div class="col-block panel ticker">
-      <div class="ticker-head">
-        <span class="ticker-label">Total Energy Savings</span>
-        <span class="ticker-live"><span class="ticker-dot"></span>Live</span>
-      </div>
-      <div class="ticker-value" id="ticker" role="status" aria-live="off" aria-label="Total energy savings, updating live">
-        <span class="tk-cur">$</span><span class="tk-int" id="tk-int">6,725,160</span><span class="tk-dec" id="tk-dec">.00</span>
-      </div>
-    </div>
-
     <!-- OVERVIEW ROW: news (context-aware width) + partner level -->
     <div class="overview" id="overview">
       <div class="col-block panel news-panel" id="news-panel">
@@ -1193,10 +1182,6 @@
     renderNews();
     updateChipAvailability();
     render();
-    // Cliff doesn't see the Total Energy Savings ticker
-    const tickerEl = document.querySelector('.ticker');
-    if (name === 'cliff') { tickerEl.style.display = 'none'; stopTicker(); }
-    else { tickerEl.style.display = ''; startTicker(); }
     requestAnimationFrame(positionTabIndicator);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
