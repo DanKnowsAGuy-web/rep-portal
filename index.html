@@ -1490,7 +1490,7 @@
   function mailtoHref(p) { return `mailto:${DAN_EMAIL}?subject=${encodeURIComponent(reqSubject(p))}&body=${encodeURIComponent(reqBody(p))}`; }
   function smsHref(p) { return `sms:${DAN}?body=${encodeURIComponent(reqSubject(p) + '\n' + reqBody(p))}`; }
   function formspreePayload(p) {
-    return { category: p.category, rep: p.rep, brand: p.brand, resource: p.resource, resourceUrl: p.url,
+    return { email: DAN_EMAIL, category: p.category, rep: p.rep, brand: p.brand, resource: p.resource, resourceUrl: p.url,
       version: p.variant, details: p.details, device: p.device, submittedAt: p.submittedAt,
       message: reqBody(p), _subject: reqSubject(p) };
   }
@@ -1502,7 +1502,9 @@
     if (FORMSPREE_ENDPOINT) {
       const btn = document.getElementById('req-submit'); btn.disabled = true; btn.textContent = 'Sending…';
       try {
-        const r = await fetch(FORMSPREE_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(formspreePayload(p)) });
+        const fd = new FormData();
+        Object.entries(formspreePayload(p)).forEach(([k, v]) => fd.append(k, v == null ? '' : v));
+        const r = await fetch(FORMSPREE_ENDPOINT, { method: 'POST', headers: { 'Accept': 'application/json' }, body: fd });
         if (r.ok) { showSuccess(p); return; }
       } catch (e) { /* fall through to fallback */ }
       showHint('Could not send automatically — use Text or Email just below.');
