@@ -622,6 +622,104 @@
   @keyframes riseIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes shake { 0%,100% { transform: translateX(0); } 18% { transform: translateX(-7px); } 36% { transform: translateX(7px); } 54% { transform: translateX(-4px); } 72% { transform: translateX(4px); } }
 
+  /* ---- REQUEST MODAL ---- */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: var(--z-toast);
+    display: flex; align-items: center; justify-content: center; padding: 1.2rem;
+    background: rgba(5,7,9,0.72); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+    opacity: 0; pointer-events: none; transition: opacity 0.3s var(--ease-out-quint);
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: auto; }
+  .modal {
+    width: 100%; max-width: 540px; max-height: calc(100dvh - 2.4rem); overflow-y: auto;
+    background: var(--ink-raise); border: 1px solid var(--gold-rule); border-radius: 4px;
+    box-shadow: 0 24px 70px rgba(0,0,0,0.6); padding: 1.8rem 1.8rem 2rem;
+    transform: translateY(14px) scale(0.985); transition: transform 0.35s var(--ease-out-expo);
+  }
+  .modal-overlay.open .modal { transform: none; }
+  .modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 0.35rem; }
+  .modal-title { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: 1.6rem; letter-spacing: 0.02em; line-height: 1.1; }
+  .modal-sub { color: var(--white-dim); font-size: 0.9rem; margin-bottom: 1.4rem; }
+  .modal-close {
+    background: transparent; border: 1px solid rgba(244,240,232,0.12); border-radius: 2px;
+    color: var(--white-dim); width: 30px; height: 30px; flex-shrink: 0; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center; transition: border-color 0.2s, color 0.2s;
+  }
+  .modal-close:hover { border-color: var(--gold-rule); color: var(--gold); }
+
+  .cat-cards { display: flex; flex-direction: column; gap: 0.7rem; }
+  .cat-card {
+    display: flex; align-items: center; gap: 0.95rem; text-align: left;
+    background: rgba(244,240,232,0.03); border: 1px solid var(--gold-rule); border-radius: 3px;
+    padding: 1rem 1.1rem; cursor: pointer; width: 100%;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  }
+  .cat-card:hover { background: var(--gold-dim); border-color: rgba(200,169,110,0.5); transform: translateX(2px); }
+  .cat-ico { color: var(--gold); flex-shrink: 0; display: inline-flex; }
+  .cat-card > span:last-child { min-width: 0; }
+  .cat-txt-main { display: block; font-size: 1rem; color: var(--white); line-height: 1.3; }
+  .cat-txt-sub { display: block; font-size: 0.8rem; color: var(--white-faint); margin-top: 0.1rem; }
+
+  .modal select, .modal textarea {
+    width: 100%; background: rgba(244,240,232,0.04);
+    border: 1px solid rgba(200,169,110,0.18); border-radius: 2px;
+    padding: 0.8rem 1rem; color: var(--white);
+    font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 300;
+    outline: none; transition: border-color 0.3s, background 0.3s; -webkit-appearance: none; appearance: none;
+  }
+  .modal textarea { resize: vertical; min-height: 88px; line-height: 1.5; }
+  .modal select:focus, .modal textarea:focus { border-color: rgba(200,169,110,0.55); background: rgba(200,169,110,0.04); }
+  .modal select option { background: var(--ink-raise); color: var(--white); }
+  .modal textarea::placeholder { color: rgba(244,240,232,0.3); }
+
+  .variant-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .variant-chip {
+    background: transparent; border: 1px solid var(--gold-rule); border-radius: 20px;
+    color: var(--white-dim); font-family: 'DM Sans', sans-serif; font-size: 0.82rem;
+    padding: 0.4rem 0.9rem; cursor: pointer; transition: background 0.2s, border-color 0.2s, color 0.2s;
+  }
+  .variant-chip[aria-pressed="true"] { background: var(--gold-dim); border-color: rgba(200,169,110,0.55); color: var(--gold-light); }
+
+  .modal-field { margin-bottom: 1.1rem; }
+  .modal-field:last-of-type { margin-bottom: 0; }
+  .modal-step { animation: fadeIn 0.3s var(--ease-out-quint) both; }
+
+  .modal-actions { display: flex; gap: 0.7rem; margin-top: 1.5rem; flex-wrap: wrap; }
+  .modal-back {
+    background: transparent; border: 1px solid rgba(244,240,232,0.12); border-radius: 2px;
+    color: var(--white-dim); font-family: 'DM Mono', monospace; font-size: 0.62rem;
+    letter-spacing: 0.18em; text-transform: uppercase; padding: 0.7rem 1.1rem; cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .modal-back:hover { border-color: var(--gold-rule); color: var(--gold); }
+  .btn-submit {
+    flex: 1; min-width: 160px;
+    background: var(--gold); border: 1px solid var(--gold); border-radius: 2px;
+    color: var(--ink); font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.95rem;
+    letter-spacing: 0.02em; padding: 0.75rem 1.1rem; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    transition: background 0.2s, opacity 0.2s;
+  }
+  .btn-submit:hover { background: var(--gold-light); }
+  .btn-submit:disabled { opacity: 0.55; cursor: default; }
+
+  .modal-express { margin-top: 1.2rem; padding-top: 1.1rem; border-top: 1px solid var(--hairline); }
+  .modal-express-label { font-size: 0.74rem; color: var(--white-faint); margin-bottom: 0.6rem; letter-spacing: 0.04em; }
+  .express-row { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+  .express-btn {
+    flex: 1; min-width: 130px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem;
+    background: transparent; border: 1px solid var(--gold-rule); border-radius: 2px;
+    color: var(--gold); font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+    padding: 0.6rem 0.9rem; text-decoration: none; cursor: pointer; transition: background 0.2s, border-color 0.2s;
+  }
+  .express-btn:hover { background: var(--gold-dim); border-color: rgba(200,169,110,0.5); }
+
+  .modal-success { text-align: center; padding: 1.2rem 0 0.4rem; animation: fadeIn 0.3s var(--ease-out-quint) both; }
+  .modal-success .succ-ico { color: var(--good); margin-bottom: 0.8rem; }
+  .modal-success .succ-title { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; font-weight: 400; margin-bottom: 0.5rem; }
+  .modal-success .succ-text { color: var(--white-dim); font-size: 0.92rem; max-width: 40ch; margin: 0 auto 1.4rem; }
+
   /* ---- RESPONSIVE ---- */
   @media (max-width: 760px) {
     .columns { grid-template-columns: 1fr; }
@@ -804,18 +902,37 @@
   <span id="toast-text">Link copied</span>
 </div>
 
+<!-- REQUEST MODAL -->
+<div class="modal-overlay" id="request-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+  <div class="modal" role="document">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title" id="modal-title">Request a Resource</div>
+      </div>
+      <button class="modal-close" type="button" aria-label="Close" onclick="closeRequest()">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
 <script>
   /* ---- ACCESS CONTROL ---- */
   const APPROVED = ["pepper","bryndon","cliff","raul","jody","tammy","garrett","ronson","mount","cj","christian","tom","dave","tony","jeff","bryn","mark","ron","jonathan","wesley","jon","wess"];
   const DISPLAY  = { pepper:"Pepper", bryndon:"Bryndon", cliff:"Cliff", raul:"Raul", jody:"Jody", tammy:"Tammy", garrett:"Garrett", ronson:"Ronson", mount:"Mount", cj:"CJ", christian:"Christian", tom:"Tom", dave:"Dave", tony:"Tony", jeff:"Jeff", bryn:"Bryn", mark:"Mark", ron:"Ron", jonathan:"Jonathan", wesley:"Wesley", jon:"Jon", wess:"Wess" };
   const DAN = "8647770688";
+  const DAN_EMAIL = "dan@danknowsaguy.org"; // where email-fallback requests go
+  // Paste your Formspree form endpoint here (e.g. "https://formspree.io/f/abcdwxyz").
+  // While left blank, the modal automatically falls back to email/SMS.
+  const FORMSPREE_ENDPOINT = "";
   const MSG = "Hey Dan, I tried to log in to the rep portal to access the marketing materials and technical data and was denied.";
   const HELP_MSG = "Hey Dan, I'm in the rep portal but I need a resource that isn't listed. Can you help?";
-  const REQUEST_MSG = "Hey Dan, I need the following resources: ";
 
   document.getElementById('btn-sms').href = "sms:" + DAN + "?body=" + encodeURIComponent(MSG);
   document.getElementById('foot-sms').href = "sms:" + DAN + "?body=" + encodeURIComponent(HELP_MSG);
-  document.getElementById('btn-request').href = "sms:" + DAN + "?body=" + encodeURIComponent(REQUEST_MSG);
+  // "Request a Resource" opens the guided modal instead of a raw SMS link.
+  document.getElementById('btn-request').addEventListener('click', e => { e.preventDefault(); openRequest(); });
 
   /* ---- CATEGORY MODEL ---- */
   const CATEGORIES = [
@@ -1225,6 +1342,207 @@
   document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') handleAccess(); });
   document.getElementById('name-input').addEventListener('input', clearLoginErrors);
   document.getElementById('pw-input').addEventListener('input', clearLoginErrors);
+
+  /* ---- REQUEST A RESOURCE MODAL ---- */
+  const REQ_ICO = {
+    error:   '<svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+    edition: '<svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>',
+    new:     '<svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>',
+    sms:     '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>',
+    mail:    '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>',
+    check:   '<svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg>'
+  };
+  const REQ_CATS = {
+    error:   { tag: 'ERROR',   plain: 'Error report',     label: "Something's wrong with a resource", sub: "Broken link, wrong info, or won't open", icon: REQ_ICO.error },
+    edition: { tag: 'EDITION', plain: 'Different version', label: "I need a different version",        sub: "Another language, format, or updated figures", icon: REQ_ICO.edition },
+    new:     { tag: 'NEW',     plain: 'New resource',      label: "I need something that isn't here",   sub: "Request a brand-new resource", icon: REQ_ICO.new }
+  };
+  const REQ_VARIANTS = ['Spanish', 'PDF', 'One-pager', 'Updated figures', 'Print-ready'];
+
+  const requestModal = document.getElementById('request-modal');
+  const modalBody = document.getElementById('modal-body');
+  let reqState = { type: null, variant: '' };
+  let reqResources = [];
+
+  function buildResourceList() {
+    const seen = new Set(); const list = [];
+    GROUPS.forEach(g => g.items.forEach(it => {
+      if (!visibleToUser(it)) return;
+      const key = it.name + '|' + it.url;
+      if (seen.has(key)) return; seen.add(key);
+      list.push({ brand: g.brand, name: it.name, url: it.url });
+    }));
+    return list;
+  }
+  function resourceSelectHTML() {
+    reqResources = buildResourceList();
+    const brands = [];
+    reqResources.forEach((r, i) => {
+      let b = brands.find(x => x.brand === r.brand);
+      if (!b) { b = { brand: r.brand, opts: [] }; brands.push(b); }
+      b.opts.push(`<option value="${i}">${esc(r.name)}</option>`);
+    });
+    const groups = brands.map(b => `<optgroup label="${esc(b.brand)}">${b.opts.join('')}</optgroup>`).join('');
+    return `<select id="req-resource"><option value="">Select a resource…</option>${groups}</select>`;
+  }
+  function brandSelectHTML() {
+    const opts = ['Energy Plus', 'Build Plus', 'Harvest Plus']
+      .map(b => `<option value="${esc(b)}"${b === activeBrand ? ' selected' : ''}>${esc(b)}</option>`).join('');
+    return `<select id="req-brand">${opts}</select>`;
+  }
+  function variantChipsHTML() {
+    return `<div class="variant-chips">${REQ_VARIANTS.map(v =>
+      `<button type="button" class="variant-chip" aria-pressed="false" onclick="toggleVariant(this,'${esc(v)}')">${esc(v)}</button>`).join('')}</div>`;
+  }
+  function toggleVariant(btn, v) {
+    const on = btn.getAttribute('aria-pressed') === 'true';
+    document.querySelectorAll('.variant-chip').forEach(c => c.setAttribute('aria-pressed', 'false'));
+    if (!on) { btn.setAttribute('aria-pressed', 'true'); reqState.variant = v; } else { reqState.variant = ''; }
+  }
+  function reqField(label, control) {
+    return `<div class="modal-field"><label class="input-label">${label}</label>${control}</div>`;
+  }
+  function showHint(msg) { const h = document.getElementById('req-hint'); if (h) { h.textContent = msg || ''; h.style.display = msg ? 'block' : 'none'; } }
+
+  function renderCategoryStep() {
+    reqState = { type: null, variant: '' };
+    modalBody.innerHTML = `
+      <div class="modal-sub">What can Dan help with? Pick one — we'll fill in the rest.</div>
+      <div class="cat-cards modal-step">
+        ${Object.entries(REQ_CATS).map(([k, c]) => `
+          <button class="cat-card" type="button" onclick="selectCategory('${k}')">
+            <span class="cat-ico">${c.icon}</span>
+            <span><span class="cat-txt-main">${c.label}</span><span class="cat-txt-sub">${c.sub}</span></span>
+          </button>`).join('')}
+      </div>`;
+  }
+  function selectCategory(type) {
+    reqState.type = type; reqState.variant = '';
+    const c = REQ_CATS[type];
+    let fields = '';
+    if (type === 'error') {
+      fields = reqField('Which resource?', resourceSelectHTML())
+             + reqField("What's wrong?", `<textarea id="req-details" placeholder="e.g. The link is broken / shows the wrong figures / won't open"></textarea>`);
+    } else if (type === 'edition') {
+      fields = reqField('Which resource?', resourceSelectHTML())
+             + reqField('What version do you need?', variantChipsHTML())
+             + reqField('Anything else? (optional)', `<textarea id="req-details" placeholder="e.g. Need it in Spanish for a client meeting Friday"></textarea>`);
+    } else {
+      fields = reqField('Which brand?', brandSelectHTML())
+             + reqField('Describe what you need', `<textarea id="req-details" placeholder="e.g. A one-page financing overview for supermarket clients"></textarea>`);
+    }
+    modalBody.innerHTML = `
+      <div class="modal-sub">${esc(c.label)}</div>
+      <div class="modal-step">
+        ${fields}
+        <div id="req-hint" style="display:none;color:var(--error-text);font-size:0.85rem;margin-top:0.7rem;"></div>
+        <div class="modal-actions">
+          <button class="modal-back" type="button" onclick="renderCategoryStep()">Back</button>
+          <button class="btn-submit" type="button" id="req-submit" onclick="submitRequest()">${FORMSPREE_ENDPOINT ? 'Send Request' : 'Send by Email'}</button>
+        </div>
+        <div class="modal-express">
+          <div class="modal-express-label">Prefer to send it yourself?</div>
+          <div class="express-row">
+            <button type="button" class="express-btn" onclick="sendVia('sms')">${REQ_ICO.sms} Text it</button>
+            <button type="button" class="express-btn" onclick="sendVia('email')">${REQ_ICO.mail} Email it</button>
+          </div>
+        </div>
+      </div>`;
+    const first = modalBody.querySelector('select, textarea');
+    if (first) setTimeout(() => first.focus(), 60);
+  }
+
+  function gatherPayload() {
+    const type = reqState.type;
+    const c = REQ_CATS[type];
+    const rep = currentUser ? (DISPLAY[currentUser] || cap(currentUser)) : 'Unknown rep';
+    let resource = '', url = '';
+    const selEl = document.getElementById('req-resource');
+    if (selEl && selEl.value !== '') { const r = reqResources[+selEl.value]; if (r) { resource = r.name; url = r.url; } }
+    const brandEl = document.getElementById('req-brand');
+    const brand = brandEl ? brandEl.value : '';
+    const detailsEl = document.getElementById('req-details');
+    const details = detailsEl ? detailsEl.value.trim() : '';
+    const stamp = new Date().toISOString().slice(0, 16).replace('T', ' ');
+    return {
+      type, tag: c.tag, category: c.plain, rep, resource, url, brand,
+      variant: reqState.variant || '', details,
+      device: window.matchMedia('(max-width: 760px)').matches ? 'mobile' : 'desktop',
+      submittedAt: stamp
+    };
+  }
+  function validateReq(p) {
+    if ((p.type === 'error' || p.type === 'edition') && !p.resource) return 'Please pick which resource.';
+    if (p.type === 'error' && !p.details) return "Please tell Dan what's wrong.";
+    if (p.type === 'new' && !p.details) return 'Please describe what you need.';
+    return null;
+  }
+  function reqSubject(p) { return `[${p.tag}] ${p.resource || p.brand || 'Request'} — from ${p.rep}`; }
+  function reqBody(p) {
+    const lines = [`Category: ${p.category}`, `Rep: ${p.rep}`];
+    if (p.resource) lines.push(`Resource: ${p.resource}${p.url ? ' (' + p.url + ')' : ''}`);
+    if (p.brand && p.type === 'new') lines.push(`Brand: ${p.brand}`);
+    if (p.variant) lines.push(`Requested version: ${p.variant}`);
+    if (p.details) lines.push(`Details: ${p.details}`);
+    lines.push(`— Sent from Rep Portal (${p.device}) ${p.submittedAt}`);
+    return lines.join('\n');
+  }
+  function mailtoHref(p) { return `mailto:${DAN_EMAIL}?subject=${encodeURIComponent(reqSubject(p))}&body=${encodeURIComponent(reqBody(p))}`; }
+  function smsHref(p) { return `sms:${DAN}?body=${encodeURIComponent(reqSubject(p) + '\n' + reqBody(p))}`; }
+  function formspreePayload(p) {
+    return { category: p.category, rep: p.rep, brand: p.brand, resource: p.resource, resourceUrl: p.url,
+      version: p.variant, details: p.details, device: p.device, submittedAt: p.submittedAt,
+      message: reqBody(p), _subject: reqSubject(p) };
+  }
+
+  async function submitRequest() {
+    const p = gatherPayload(); const err = validateReq(p);
+    if (err) { showHint(err); return; }
+    showHint('');
+    if (FORMSPREE_ENDPOINT) {
+      const btn = document.getElementById('req-submit'); btn.disabled = true; btn.textContent = 'Sending…';
+      try {
+        const r = await fetch(FORMSPREE_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(formspreePayload(p)) });
+        if (r.ok) { showSuccess(p); return; }
+      } catch (e) { /* fall through to fallback */ }
+      showHint('Could not send automatically — use Text or Email just below.');
+      btn.disabled = false; btn.textContent = 'Send Request';
+    } else {
+      window.location.href = mailtoHref(p);
+      showSuccess(p);
+    }
+  }
+  function sendVia(channel) {
+    const p = gatherPayload(); const err = validateReq(p);
+    if (err) { showHint(err); return; }
+    showHint('');
+    window.location.href = channel === 'sms' ? smsHref(p) : mailtoHref(p);
+    showSuccess(p);
+  }
+  function showSuccess(p) {
+    const who = (p.rep && p.rep !== 'Unknown rep') ? ', ' + esc(p.rep) : '';
+    modalBody.innerHTML = `
+      <div class="modal-success">
+        <div class="succ-ico">${REQ_ICO.check}</div>
+        <div class="succ-title">Request sent</div>
+        <div class="succ-text">Thanks${who} — Dan has your ${esc(p.category.toLowerCase())} and will follow up.</div>
+        <button class="btn-submit" type="button" style="flex:none;min-width:160px;" onclick="closeRequest()">Done</button>
+      </div>`;
+  }
+
+  function openRequest() {
+    renderCategoryStep();
+    requestModal.hidden = false;
+    requestAnimationFrame(() => requestModal.classList.add('open'));
+    document.body.style.overflow = 'hidden';
+  }
+  function closeRequest() {
+    requestModal.classList.remove('open');
+    document.body.style.overflow = '';
+    setTimeout(() => { requestModal.hidden = true; }, 300);
+  }
+  requestModal.addEventListener('click', e => { if (e.target === requestModal) closeRequest(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !requestModal.hidden) closeRequest(); });
 </script>
 </body>
 </html>
