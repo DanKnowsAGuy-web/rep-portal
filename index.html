@@ -857,6 +857,7 @@
       { name: 'Bilingual Calculator',        kind: 'Calculator', category: 'tools',     type: 'link', url: 'https://bit.ly/ep-calc' },
       { name: 'Supermarkets Energy Savings', kind: 'Landing Page', category: 'marketing', type: 'link', url: 'https://bit.ly/supermarket-energy-savings' },
       { name: 'Hotel Energy Savings',        kind: 'Landing Page', category: 'marketing', type: 'link', url: 'https://bit.ly/hotel-energy-savings' },
+      { name: 'Commercial Savings',          kind: 'Landing Page', category: 'marketing', type: 'link', url: 'https://bit.ly/commercial-savings', only: ['pepper','raul'] },
       { name: 'Hotel / Hospitality — Verified Savings', kind: 'Verified Savings', category: 'reference', type: 'doc', url: 'https://bit.ly/hotel-cs-savings' },
       { name: 'Verified Energy Savings — Master Record', kind: 'Master Record', category: 'reference', type: 'doc', url: 'https://bit.ly/verified-results' },
     ]},
@@ -915,6 +916,7 @@
   let activeCat = 'all';
   let activeBrand = BRAND_ORDER[0];
   let query = '';
+  let currentUser = ''; // lowercased first name of the logged-in rep; gates restricted items
   let animateNext = false; // true for tab/filter changes, false while typing
 
   /* ---- ESCAPE ---- */
@@ -1010,6 +1012,7 @@
 
   /* ---- MATCH ---- */
   function matches(item) {
+    if (item.only && !item.only.includes(currentUser)) return false; // restricted to specific reps
     if (activeCat !== 'all' && item.category !== activeCat) return false;
     if (query) {
       const hay = (item.name + ' ' + item.kind + ' ' + (item.code || '') + ' ' + (CAT_LABEL[item.category] || '')).toLowerCase();
@@ -1057,7 +1060,7 @@
     emptyEl.classList.toggle('visible', shown === 0);
     gridEl.style.display = shown === 0 ? 'none' : '';
 
-    const brandTotal = groups.reduce((n, g) => n + g.items.length, 0);
+    const brandTotal = groups.reduce((n, g) => n + g.items.filter(it => !it.only || it.only.includes(currentUser)).length, 0);
     countEl.textContent = (activeCat === 'all' && !query) ? `${brandTotal} resources` : `${shown} of ${brandTotal}`;
   }
 
@@ -1170,6 +1173,7 @@
     }
 
     // Granted
+    currentUser = name;
     closeError();
     pwError.classList.remove('visible');
     document.getElementById('welcome-name-display').textContent = DISPLAY[name] || cap(name);
