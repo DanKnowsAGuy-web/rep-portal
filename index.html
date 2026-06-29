@@ -440,6 +440,20 @@
     border: 1px solid var(--gold-rule); border-radius: 20px; padding: 0.16rem 0.52rem;
   }
   .rm-empty { font-size: 0.85rem; color: var(--white-faint); padding: 0.7rem 0; }
+  .rm-group {
+    display: flex; align-items: center; gap: 0.5rem; margin: 1.1rem 0 0.3rem;
+    font-family: 'DM Mono', monospace; font-size: 0.56rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold);
+  }
+  .rm-group:first-child { margin-top: 0; }
+  .rm-group .rm-grule { flex: 1; height: 1px; background: var(--gold-rule); opacity: 0.4; }
+  .rm-group .rm-gcount { color: var(--white-faint); }
+  .rm-pill {
+    font-family: 'DM Mono', monospace; font-size: 0.5rem; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 0.12rem 0.42rem; border-radius: 2px; border: 1px solid var(--gold-rule); color: var(--white-faint);
+    flex-shrink: 0; line-height: 1.5;
+  }
+  .rm-pill.lang-en { color: var(--gold-light); border-color: rgba(200,169,110,0.45); }
+  .rm-pill.lang-es { color: var(--good); border-color: rgba(126,201,154,0.4); }
 
   .tier-panel .tier-timeline { max-width: none; margin: 0; }
 
@@ -1055,33 +1069,33 @@
     { status: 'live', title: 'Verified Energy Savings — Master Record', text: 'The master record of verified, real-world savings results is now posted under Energy Plus.', date: 'This week' },
     { status: 'live', title: 'In-Place Cerro Colorado, Peru', text: 'A new Build Plus case study from the Cerro Colorado project in Peru is now available.', date: 'Recent' },
 
-    { status: 'progress', title: 'In-Place One-Pager (English)' },
-    { status: 'progress', title: 'In-Place One-Pager (Spanish)' },
-    { status: 'progress', title: 'HVAC Optimizer One-Pager (English)' },
-    { status: 'progress', title: 'HVAC Optimizer One-Pager (Spanish)' },
-    { status: 'progress', title: 'Solar Coil One-Pager (English)' },
-    { status: 'progress', title: 'Solar Coil One-Pager (Spanish)' },
-    { status: 'progress', title: 'Electric Panel Harmonizer One-Pager (English)' },
-    { status: 'progress', title: 'Electric Panel Harmonizer One-Pager (Spanish)' },
-    { status: 'progress', title: 'Suncor One-Pager (English)' },
-    { status: 'progress', title: 'Suncor One-Pager (Spanish)' },
-    { status: 'progress', title: 'Dirty Energy Billing One-Pager (English)' },
-    { status: 'progress', title: 'Dirty Energy Billing One-Pager (Spanish)' },
-    { status: 'progress', title: 'Financing One-Pager (English)' },
-    { status: 'progress', title: 'Financing One-Pager (Spanish)' },
-    { status: 'progress', title: 'Energy Bill Audit Walkthrough Video (English)' },
-    { status: 'progress', title: 'Energy Bill Audit Walkthrough Video (Spanish)' },
-    { status: 'progress', title: 'HVAC Efficiency Video (English)' },
-    { status: 'progress', title: 'HVAC Efficiency Video (Spanish)' },
-    { status: 'progress', title: 'Energy Distortion Video (English)' },
-    { status: 'progress', title: 'Energy Distortion Video (Spanish)' },
-    { status: 'progress', title: 'Energy Plus Energy Savings Program Video (English)' },
-    { status: 'progress', title: 'Energy Plus Energy Savings Program Video (Spanish)' },
+    { status: 'progress', group: 'One-Pagers', title: 'In-Place', lang: 'EN' },
+    { status: 'progress', group: 'One-Pagers', title: 'In-Place', lang: 'ES' },
+    { status: 'progress', group: 'One-Pagers', title: 'HVAC Optimizer', lang: 'EN' },
+    { status: 'progress', group: 'One-Pagers', title: 'HVAC Optimizer', lang: 'ES' },
+    { status: 'progress', group: 'One-Pagers', title: 'Solar Coil', lang: 'EN' },
+    { status: 'progress', group: 'One-Pagers', title: 'Solar Coil', lang: 'ES' },
+    { status: 'progress', group: 'One-Pagers', title: 'Electric Panel Harmonizer', lang: 'EN' },
+    { status: 'progress', group: 'One-Pagers', title: 'Electric Panel Harmonizer', lang: 'ES' },
+    { status: 'progress', group: 'One-Pagers', title: 'Suncor', lang: 'EN' },
+    { status: 'progress', group: 'One-Pagers', title: 'Suncor', lang: 'ES' },
+    { status: 'progress', group: 'One-Pagers', title: 'Dirty Energy Billing', lang: 'EN' },
+    { status: 'progress', group: 'One-Pagers', title: 'Dirty Energy Billing', lang: 'ES' },
+    { status: 'progress', group: 'One-Pagers', title: 'Financing', lang: 'EN' },
+    { status: 'progress', group: 'One-Pagers', title: 'Financing', lang: 'ES' },
+    { status: 'progress', group: 'Videos', title: 'Energy Bill Audit Walkthrough', lang: 'EN' },
+    { status: 'progress', group: 'Videos', title: 'Energy Bill Audit Walkthrough', lang: 'ES' },
+    { status: 'progress', group: 'Videos', title: 'HVAC Efficiency', lang: 'EN' },
+    { status: 'progress', group: 'Videos', title: 'HVAC Efficiency', lang: 'ES' },
+    { status: 'progress', group: 'Videos', title: 'Energy Distortion', lang: 'EN' },
+    { status: 'progress', group: 'Videos', title: 'Energy Distortion', lang: 'ES' },
+    { status: 'progress', group: 'Videos', title: 'Energy Plus Energy Savings Program', lang: 'EN' },
+    { status: 'progress', group: 'Videos', title: 'Energy Plus Energy Savings Program', lang: 'ES' },
 
-    { status: 'planned', title: 'In-Place Pavers Calculator' },
-    { status: 'planned', title: 'Updated Project Investor Contracts' },
-    { status: 'planned', title: 'In-Place Concrete Landing Page' },
-    { status: 'planned', title: 'Data Center Standards — Energy Plus Protocol' },
+    { status: 'planned', title: 'In-Place Pavers Calculator', type: 'Calculator' },
+    { status: 'planned', title: 'Updated Project Investor Contracts', type: 'Contract' },
+    { status: 'planned', title: 'In-Place Concrete Landing Page', type: 'Landing Page' },
+    { status: 'planned', title: 'Data Center Standards — Energy Plus Protocol', type: 'Protocol' },
   ];
   let roadmapFilter = 'live';
 
@@ -1098,6 +1112,12 @@
 
   /* ---- ROADMAP RENDER (What's New & Next) + CONTEXT-AWARE WIDTH ---- */
   const RM_VOTE_ICON = '<svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>';
+  function roadmapPills(n) {
+    let pills = '';
+    if (n.type) pills += `<span class="rm-pill">${esc(n.type)}</span>`;
+    if (n.lang) pills += `<span class="rm-pill lang-${n.lang.toLowerCase()}">${esc(n.lang)}</span>`;
+    return pills;
+  }
   function roadmapItemHTML(n) {
     let right = '';
     if (n.status === 'requested' && n.votes != null) right = `<span class="rm-votes">${RM_VOTE_ICON}${n.votes}</span>`;
@@ -1105,9 +1125,23 @@
     const tag = n.tag ? `<span class="news-tag">${esc(n.tag)}</span>` : '';
     return `
       <div class="news-item">
-        <div class="news-top">${tag}<span class="news-title">${esc(n.title)}</span>${right}</div>
+        <div class="news-top">${tag}<span class="news-title">${esc(n.title)}</span>${roadmapPills(n)}${right}</div>
         ${n.text ? `<div class="news-text">${esc(n.text)}</div>` : ''}
       </div>`;
+  }
+  function roadmapListHTML(items) {
+    const groups = [];
+    items.forEach(it => {
+      const g = it.group || '';
+      let bucket = groups.find(x => x.name === g);
+      if (!bucket) { bucket = { name: g, items: [] }; groups.push(bucket); }
+      bucket.items.push(it);
+    });
+    if (groups.length === 1 && groups[0].name === '') return groups[0].items.map(roadmapItemHTML).join('');
+    return groups.map(g => {
+      const head = g.name ? `<div class="rm-group"><span>${esc(g.name)}</span><span class="rm-gcount">${g.items.length}</span><span class="rm-grule"></span></div>` : '';
+      return head + g.items.map(roadmapItemHTML).join('');
+    }).join('');
   }
   function renderNews() {
     const panel = document.getElementById('news-panel');
@@ -1121,7 +1155,7 @@
     let items = ROADMAP.filter(r => r.status === roadmapFilter);
     if (roadmapFilter === 'requested') items = items.slice().sort((a, b) => (b.votes || 0) - (a.votes || 0));
     list.innerHTML = items.length
-      ? items.map(roadmapItemHTML).join('')
+      ? roadmapListHTML(items)
       : `<div class="rm-empty">Nothing here right now — check back soon.</div>`;
     panel.style.display = '';
     overview.style.setProperty('--news-ratio', '2fr 1fr');
