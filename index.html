@@ -423,6 +423,24 @@
   .news-date { margin-left: auto; font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.12em; color: var(--white-faint); white-space: nowrap; }
   .news-text { font-size: 0.9rem; color: var(--white-dim); line-height: 1.55; }
 
+  /* ---- ROADMAP TOGGLE (What's New & Next) ---- */
+  .rm-toggle { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.1rem; }
+  .rm-tab {
+    font-family: 'DM Mono', monospace; font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--white-faint); background: transparent; border: 1px solid var(--gold-rule); border-radius: 20px;
+    padding: 0.32rem 0.62rem; cursor: pointer; white-space: nowrap;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+  }
+  .rm-tab:hover { color: var(--gold); border-color: rgba(200,169,110,0.5); }
+  .rm-tab[aria-pressed="true"] { background: var(--gold-dim); border-color: rgba(200,169,110,0.55); color: var(--gold-light); }
+  .rm-ct { opacity: 0.65; margin-left: 0.3rem; }
+  .rm-votes {
+    margin-left: auto; display: inline-flex; align-items: center; gap: 0.28rem; flex-shrink: 0;
+    font-family: 'DM Mono', monospace; font-size: 0.62rem; color: var(--gold-light);
+    border: 1px solid var(--gold-rule); border-radius: 20px; padding: 0.16rem 0.52rem;
+  }
+  .rm-empty { font-size: 0.85rem; color: var(--white-faint); padding: 0.7rem 0; }
+
   .tier-panel .tier-timeline { max-width: none; margin: 0; }
 
   /* ---- LIVE TICKER ---- */
@@ -823,7 +841,8 @@
     <!-- OVERVIEW ROW: news (context-aware width) + partner level -->
     <div class="overview" id="overview">
       <div class="col-block panel news-panel" id="news-panel">
-        <div class="panel-head"><h2>Latest Updates</h2><span class="rule"></span></div>
+        <div class="panel-head"><h2>What's New &amp; Next</h2><span class="rule"></span></div>
+        <div class="rm-toggle" id="rm-toggle"></div>
         <div id="news-list"></div>
       </div>
       <div class="col-block panel tier-panel">
@@ -1025,11 +1044,23 @@
   const BRAND_ORDER = ['Energy Plus', 'Build Plus'];
 
   /* ---- NEWS / UPDATES (edit freely; the column width adapts to how many there are) ---- */
-  const NEWS = [
-    { tag: 'New', title: 'Solar Partners landing page is live', text: 'The new Solar Partners site is now linked under Energy Plus → Main Website Links.', date: 'This week' },
-    { title: 'Verified Energy Savings — Master Record', text: 'The master record of verified, real-world savings results is now posted under Energy Plus.', date: 'This week' },
-    { title: 'In-Place Cerro Colorado, Peru', text: 'A new Build Plus case study from the Cerro Colorado project in Peru is now available.', date: 'Recent' },
+  /* Roadmap pipeline. Each item has a status: 'live' | 'progress' | 'planned' | 'requested'.
+     'live' items are shipped (the old "Latest Updates"). 'requested' items carry a `votes`
+     interest count that you set as you triage incoming requests. Edit freely — add, move
+     between statuses, and bump votes. The non-'live' items below are samples to replace. */
+  const RM_ORDER = ['live', 'progress', 'planned', 'requested'];
+  const RM_STATUS = { live: { label: 'Live' }, progress: { label: 'In Progress' }, planned: { label: 'Planned' }, requested: { label: 'Requested' } };
+  const ROADMAP = [
+    { status: 'live', tag: 'New', title: 'Solar Partners landing page is live', text: 'The new Solar Partners site is now linked under Energy Plus → Main Website Links.', date: 'This week' },
+    { status: 'live', title: 'Verified Energy Savings — Master Record', text: 'The master record of verified, real-world savings results is now posted under Energy Plus.', date: 'This week' },
+    { status: 'live', title: 'In-Place Cerro Colorado, Peru', text: 'A new Build Plus case study from the Cerro Colorado project in Peru is now available.', date: 'Recent' },
+    { status: 'progress', title: 'Hotel / Hospitality verified savings expansion', text: 'Adding more verified hospitality case studies to the savings record.', date: 'Now' },
+    { status: 'planned', title: 'Spanish-language marketing set', text: 'Bilingual versions of the top landing pages and one-pagers.' },
+    { status: 'requested', title: 'Financing one-pager for supermarkets', text: 'Energy Plus · requested by reps', votes: 12 },
+    { status: 'requested', title: 'Spanish version of Hotel Energy Savings', text: 'Energy Plus · different edition', votes: 8 },
+    { status: 'requested', title: 'BaseGrade ROI calculator', text: 'Build Plus · new resource', votes: 5 },
   ];
+  let roadmapFilter = 'live';
 
   /* ---- STATE ---- */
   let activeCat = 'all';
@@ -1042,25 +1073,37 @@
   function esc(s) { return String(s).replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
   function brandMark(name) { return esc(name.replace(/\s*Plus$/, '')) + '<span class="plus"> +</span>'; }
 
-  /* ---- NEWS RENDER + CONTEXT-AWARE WIDTH ---- */
+  /* ---- ROADMAP RENDER (What's New & Next) + CONTEXT-AWARE WIDTH ---- */
+  const RM_VOTE_ICON = '<svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>';
+  function roadmapItemHTML(n) {
+    let right = '';
+    if (n.status === 'requested' && n.votes != null) right = `<span class="rm-votes">${RM_VOTE_ICON}${n.votes}</span>`;
+    else if (n.date) right = `<span class="news-date">${esc(n.date)}</span>`;
+    const tag = n.tag ? `<span class="news-tag">${esc(n.tag)}</span>` : '';
+    return `
+      <div class="news-item">
+        <div class="news-top">${tag}<span class="news-title">${esc(n.title)}</span>${right}</div>
+        ${n.text ? `<div class="news-text">${esc(n.text)}</div>` : ''}
+      </div>`;
+  }
   function renderNews() {
     const panel = document.getElementById('news-panel');
     const list = document.getElementById('news-list');
+    const toggle = document.getElementById('rm-toggle');
     const overview = document.getElementById('overview');
-    if (!NEWS.length) {
-      panel.style.display = 'none';
-      overview.style.setProperty('--news-ratio', '1fr');
-      return;
-    }
+    const counts = {}; RM_ORDER.forEach(s => counts[s] = ROADMAP.filter(r => r.status === s).length);
+    toggle.innerHTML = RM_ORDER.map(s =>
+      `<button class="rm-tab" type="button" aria-pressed="${s === roadmapFilter}" onclick="setRoadmapFilter('${s}')">${esc(RM_STATUS[s].label)}${counts[s] ? `<span class="rm-ct">${counts[s]}</span>` : ''}</button>`
+    ).join('');
+    let items = ROADMAP.filter(r => r.status === roadmapFilter);
+    if (roadmapFilter === 'requested') items = items.slice().sort((a, b) => (b.votes || 0) - (a.votes || 0));
+    list.innerHTML = items.length
+      ? items.map(roadmapItemHTML).join('')
+      : `<div class="rm-empty">Nothing here right now — check back soon.</div>`;
     panel.style.display = '';
-    list.innerHTML = NEWS.map(n => `
-      <div class="news-item">
-        <div class="news-top">${n.tag ? `<span class="news-tag">${esc(n.tag)}</span>` : ''}<span class="news-title">${esc(n.title)}</span>${n.date ? `<span class="news-date">${esc(n.date)}</span>` : ''}</div>
-        <div class="news-text">${esc(n.text)}</div>
-      </div>`).join('');
-    // News is fixed at ~2/3 of the row; partner level takes ~1/3.
     overview.style.setProperty('--news-ratio', '2fr 1fr');
   }
+  function setRoadmapFilter(s) { roadmapFilter = s; renderNews(); }
 
   /* ---- BRAND TABS ---- */
   const tabsEl = document.getElementById('brand-tabs');
