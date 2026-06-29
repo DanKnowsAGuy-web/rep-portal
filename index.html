@@ -454,6 +454,7 @@
   }
   .rm-pill.lang-en { color: var(--gold-light); border-color: rgba(200,169,110,0.45); }
   .rm-pill.lang-es { color: var(--good); border-color: rgba(126,201,154,0.4); }
+  .rm-pill.brand { color: var(--white-dim); border-color: rgba(244,240,232,0.16); letter-spacing: 0.1em; }
 
   .tier-panel .tier-timeline { max-width: none; margin: 0; }
 
@@ -1065,37 +1066,26 @@
   const RM_ORDER = ['live', 'progress', 'planned', 'requested'];
   const RM_STATUS = { live: { label: 'Live' }, progress: { label: 'In Progress' }, planned: { label: 'Planned' }, requested: { label: 'Requested' } };
   const ROADMAP = [
-    { status: 'live', tag: 'New', title: 'Solar Partners landing page is live', text: 'The new Solar Partners site is now linked under Energy Plus → Main Website Links.', date: 'This week' },
-    { status: 'live', title: 'Verified Energy Savings — Master Record', text: 'The master record of verified, real-world savings results is now posted under Energy Plus.', date: 'This week' },
-    { status: 'live', title: 'In-Place Cerro Colorado, Peru', text: 'A new Build Plus case study from the Cerro Colorado project in Peru is now available.', date: 'Recent' },
+    { status: 'live', brand: 'Energy Plus', tag: 'New', title: 'Solar Partners landing page is live', text: 'The new Solar Partners site is now linked under Energy Plus → Main Website Links.', date: 'This week' },
+    { status: 'live', brand: 'Energy Plus', title: 'Verified Energy Savings — Master Record', text: 'The master record of verified, real-world savings results is now posted under Energy Plus.', date: 'This week' },
+    { status: 'live', brand: 'Build Plus', title: 'In-Place Cerro Colorado, Peru', text: 'A new Build Plus case study from the Cerro Colorado project in Peru is now available.', date: 'Recent' },
 
-    { status: 'progress', group: 'One-Pagers', title: 'In-Place', lang: 'EN' },
-    { status: 'progress', group: 'One-Pagers', title: 'In-Place', lang: 'ES' },
-    { status: 'progress', group: 'One-Pagers', title: 'HVAC Optimizer', lang: 'EN' },
-    { status: 'progress', group: 'One-Pagers', title: 'HVAC Optimizer', lang: 'ES' },
-    { status: 'progress', group: 'One-Pagers', title: 'Solar Coil', lang: 'EN' },
-    { status: 'progress', group: 'One-Pagers', title: 'Solar Coil', lang: 'ES' },
-    { status: 'progress', group: 'One-Pagers', title: 'Electric Panel Harmonizer', lang: 'EN' },
-    { status: 'progress', group: 'One-Pagers', title: 'Electric Panel Harmonizer', lang: 'ES' },
-    { status: 'progress', group: 'One-Pagers', title: 'Suncor', lang: 'EN' },
-    { status: 'progress', group: 'One-Pagers', title: 'Suncor', lang: 'ES' },
-    { status: 'progress', group: 'One-Pagers', title: 'Dirty Energy Billing', lang: 'EN' },
-    { status: 'progress', group: 'One-Pagers', title: 'Dirty Energy Billing', lang: 'ES' },
-    { status: 'progress', group: 'One-Pagers', title: 'Financing', lang: 'EN' },
-    { status: 'progress', group: 'One-Pagers', title: 'Financing', lang: 'ES' },
-    { status: 'progress', group: 'Videos', title: 'Energy Bill Audit Walkthrough', lang: 'EN' },
-    { status: 'progress', group: 'Videos', title: 'Energy Bill Audit Walkthrough', lang: 'ES' },
-    { status: 'progress', group: 'Videos', title: 'HVAC Efficiency', lang: 'EN' },
-    { status: 'progress', group: 'Videos', title: 'HVAC Efficiency', lang: 'ES' },
-    { status: 'progress', group: 'Videos', title: 'Energy Distortion', lang: 'EN' },
-    { status: 'progress', group: 'Videos', title: 'Energy Distortion', lang: 'ES' },
-    { status: 'progress', group: 'Videos', title: 'Energy Plus Energy Savings Program', lang: 'EN' },
-    { status: 'progress', group: 'Videos', title: 'Energy Plus Energy Savings Program', lang: 'ES' },
+    { status: 'progress', group: 'One-Pagers', brand: 'Build Plus',  title: 'In-Place', langs: ['EN', 'ES'] },
+    { status: 'progress', group: 'One-Pagers', brand: 'Energy Plus', title: 'HVAC Optimizer', langs: ['EN', 'ES'] },
+    { status: 'progress', group: 'One-Pagers', brand: 'Energy Plus', title: 'Solar Coil', langs: ['EN', 'ES'] },
+    { status: 'progress', group: 'One-Pagers', brand: 'Energy Plus', title: 'Electric Panel Harmonizer', langs: ['EN', 'ES'] },
+    { status: 'progress', group: 'One-Pagers', brand: 'Energy Plus', title: 'Suncor', langs: ['EN', 'ES'] },
+    { status: 'progress', group: 'One-Pagers', brand: 'Energy Plus', title: 'Dirty Energy Billing', langs: ['EN', 'ES'] },
+    { status: 'progress', group: 'One-Pagers', brand: 'Energy Plus', title: 'Financing', langs: ['EN', 'ES'] },
+    { status: 'progress', group: 'Videos', brand: 'Energy Plus', title: 'Energy Bill Audit Walkthrough', langs: ['EN', 'ES'] },
+    { status: 'progress', group: 'Videos', brand: 'Energy Plus', title: 'HVAC Efficiency', langs: ['EN', 'ES'] },
+    { status: 'progress', group: 'Videos', brand: 'Energy Plus', title: 'Energy Distortion', langs: ['EN', 'ES'] },
+    { status: 'progress', group: 'Videos', brand: 'Energy Plus', title: 'Energy Plus Energy Savings Program', langs: ['EN', 'ES'] },
 
-    { status: 'planned', title: 'In-Place Pavers Calculator', type: 'Calculator' },
-    { status: 'planned', title: 'Updated Project Investor Contracts', type: 'Contract' },
-    { status: 'planned', title: 'In-Place Concrete Landing Page', type: 'Landing Page' },
-    { status: 'planned', title: 'Data Center Standards — Energy Plus Protocol', type: 'Protocol' },
+    { status: 'planned', group: 'Tools', brand: 'Build Plus',  title: 'In-Place Pavers Calculator' },
+    { status: 'planned', group: 'Web',   brand: 'Build Plus',  title: 'In-Place Concrete Landing Page' },
+    { status: 'planned', group: 'Docs',  brand: 'Energy Plus', title: 'Updated Project Investor Contracts' },
+    { status: 'planned', group: 'Docs',  brand: 'Energy Plus', title: 'Data Center Standards — Energy Plus Protocol' },
   ];
   let roadmapFilter = 'live';
 
@@ -1114,8 +1104,9 @@
   const RM_VOTE_ICON = '<svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>';
   function roadmapPills(n) {
     let pills = '';
+    if (n.brand) pills += `<span class="rm-pill brand">${esc(n.brand === 'Build Plus' ? 'Build +' : 'Energy +')}</span>`;
     if (n.type) pills += `<span class="rm-pill">${esc(n.type)}</span>`;
-    if (n.lang) pills += `<span class="rm-pill lang-${n.lang.toLowerCase()}">${esc(n.lang)}</span>`;
+    (n.langs || []).forEach(l => pills += `<span class="rm-pill lang-${l.toLowerCase()}">${esc(l)}</span>`);
     return pills;
   }
   function roadmapItemHTML(n) {
